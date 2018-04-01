@@ -27,6 +27,7 @@ def main():
         print('    New connect : {}'.format(con_addr))
         useful_work(conn)
         conn.close()
+    print('CLOSED')
 
 
 def cli_handler():
@@ -57,11 +58,20 @@ def cli_handler():
 def useful_work(conn):
     print(2)
     received_data = conn.recv(1024)
-    received_data = json.dumps(received_data.decode())
-    print('    Received data:'.format(received_data))
+    received_data = received_data.decode()
+    received_data = json.loads(received_data)
+    print('    Received data: {0}'.format(received_data['a1']))
+
+    payload = {
+        "a1": "A!A!B@B@",
+        "b2": "B@"
+    }
+    payload = json.dumps(payload)
+    payload = payload.encode()
+    print('SEND')
+    conn.send(payload)
 
 
-
-
+# cd PycharmProjects\one_cup_phone
 if __name__ == '__main__':
     main()

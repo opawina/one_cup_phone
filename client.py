@@ -19,14 +19,12 @@ def main():
     sock = socket.socket(family=socket.AF_INET,
                          type=socket.SOCK_STREAM,
                          proto=0)
-    sock.bind(socket_)
-    sock.listen(5)
-    print(1)
-    while True:
-        conn, con_addr = sock.accept()
-        print('    New connect : {}'.format(con_addr))
-        useful_work(conn)
-        conn.close()
+    sock.connect(socket_)
+    print('CONNECTED TO : {0}'.format(socket_))
+    useful_work(sock)
+    print(3)
+    sock.close()
+    print('CLOSED')
 
 
 def cli_handler():
@@ -55,11 +53,22 @@ def cli_handler():
 
 
 def useful_work(conn):
-    print(2)
-    received_data = conn.recv(1024)
-    received_data = json.dumps(received_data.decode())
-    print('    Received data:'.format(received_data))
+    payload = {
+        "a1": "A!A!",
+        "b2": "B@"
+    }
+    print('SENT {0}'.format(payload))
+    payload = json.dumps(payload)
+    payload = payload.encode('utf-8')
+    conn.send(payload)
 
+    while True:
+        received_data = conn.recv(1024)
+        if received_data:
+            received_data = received_data.decode()
+            received_data = json.loads(received_data)
+            print('ANSWER FROM SERVER : {0}'.format(received_data['a1']))
+            break
 
 
 
