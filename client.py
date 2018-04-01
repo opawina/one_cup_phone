@@ -15,7 +15,7 @@ import json
 def main():
     socket_ = cli_handler()
 
-    print('+SERVER START+')
+    print('+CLIENT START+')
     sock = socket.socket(family=socket.AF_INET,
                          type=socket.SOCK_STREAM,
                          proto=0)
