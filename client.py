@@ -14,15 +14,8 @@ import json
 
 def main():
     socket_ = cli_handler()
-
-    print('+CLIENT START+')
-    sock = socket.socket(family=socket.AF_INET,
-                         type=socket.SOCK_STREAM,
-                         proto=0)
-    sock.connect(socket_)
-    print('CONNECTED TO : {0}'.format(socket_))
+    sock = start_client(socket_)
     useful_work(sock)
-    print(3)
     sock.close()
     print('CLOSED')
 
@@ -52,24 +45,49 @@ def cli_handler():
         return (address, port)
 
 
+def start_client(socket_):
+    print('+CLIENT START+')
+    sock = socket.socket(family=socket.AF_INET,
+                         type=socket.SOCK_STREAM,
+                         proto=0)
+    sock.connect(socket_)
+    print('CONNECTED TO : {0}'.format(socket_))
+
+    return sock
+
+
 def useful_work(conn):
-    payload = {
-        "a1": "A!A!",
-        "b2": "B@"
+    dic_tmpl = {
+        "article": "connect",
+        "message": "key1"
     }
-    print('SENT {0}'.format(payload))
-    payload = json.dumps(payload)
-    payload = payload.encode('utf-8')
-    conn.send(payload)
 
+    # здороваемся
+    print('SENT {0}'.format(dic_tmpl))
+    dic_tmpl = json.dumps(dic_tmpl)
+    dic_tmpl = dic_tmpl.encode('utf-8')
+    conn.send(dic_tmpl)
+
+    received_data = conn.recv(1024)
+    if received_data:
+        print(101)
+        received_data = received_data.decode()
+        received_data = json.loads(received_data)
+        print('ANSWER FROM SERVER : {0}'.format(received_data['message']))
+
+    # cli
     while True:
-        received_data = conn.recv(1024)
-        if received_data:
-            received_data = received_data.decode()
-            received_data = json.loads(received_data)
-            print('ANSWER FROM SERVER : {0}'.format(received_data['a1']))
-            break
+        msg = input()
 
+        dic_tmpl = {}
+        dic_tmpl["article"] = "canal"
+        dic_tmpl["message"] = msg
+        dic_tmpl = json.dumps(dic_tmpl)
+        dic_tmpl = dic_tmpl.encode('utf-8')
+        conn.send(dic_tmpl)
+
+        if msg == "stop server":
+            return 1
 
 
 if __name__ == '__main__':

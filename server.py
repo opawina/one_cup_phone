@@ -15,19 +15,24 @@ import json
 def main():
     socket_ = cli_handler()
 
-    print('+SERVER START+')
     sock = socket.socket(family=socket.AF_INET,
                          type=socket.SOCK_STREAM,
                          proto=0)
     sock.bind(socket_)
     sock.listen(5)
-    print(1)
+
+    print('+SERVER START+\nListening...')
+
     while True:
         conn, con_addr = sock.accept()
-        print('    New connect : {}'.format(con_addr))
-        useful_work(conn)
-        conn.close()
-    print('CLOSED')
+        print('New connect : {}'.format(con_addr))
+        answer = useful_work(sock, conn)
+
+        if answer:
+            break
+
+    sock.close()
+    print("STOP")
 
 
 def cli_handler():
@@ -55,23 +60,47 @@ def cli_handler():
         return (address, port)
 
 
-def useful_work(conn):
-    print(2)
+def useful_work(sock, conn):
+    # здороваемся
     received_data = conn.recv(1024)
     received_data = received_data.decode()
     received_data = json.loads(received_data)
-    print('    Received data: {0}'.format(received_data['a1']))
+    print('Received data: {0}'.format(received_data))
 
-    payload = {
-        "a1": "A!A!B@B@",
-        "b2": "B@"
+    dic_tmpl = {
+        "article": "connect",
+        "message": "key2"
     }
-    payload = json.dumps(payload)
-    payload = payload.encode()
-    print('SEND')
-    conn.send(payload)
+    dic_tmpl = json.dumps(dic_tmpl)
+    dic_tmpl = dic_tmpl.encode()
+
+    conn.send(dic_tmpl)
+    print('Send welcom to client')
+
+    # обслуживаем
+    while True:
+        received_data = conn.recv(1024)
+        if received_data:
+            received_data = received_data.decode()
+            received_data = json.loads(received_data)
+
+            if received_data["message"] == "stop server":
+                return 1
+
+            print('Received data: {0}'.format(received_data['message']))
 
 
-# cd PycharmProjects\one_cup_phone
+
 if __name__ == '__main__':
     main()
+
+
+
+
+
+
+
+'''
+
+cd PycharmProjects\one_cup_phone
+'''
