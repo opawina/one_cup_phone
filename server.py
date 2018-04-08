@@ -7,21 +7,16 @@ Beautiful code!
 '''
 
 import socket
-import sys
-import getopt
+import argparse
 import json
+
+from Classes import Server
 
 
 def main():
+
     socket_ = cli_handler()
-
-    sock = socket.socket(family=socket.AF_INET,
-                         type=socket.SOCK_STREAM,
-                         proto=0)
-    sock.bind(socket_)
-    sock.listen(5)
-
-    print('+SERVER START+\nListening...')
+    sock = Server(socket_)
 
     while True:
         conn, con_addr = sock.accept()
@@ -36,28 +31,21 @@ def main():
 
 
 def cli_handler():
-        try:
-            opts, args = getopt.getopt(sys.argv[1:],
-                                       "ha:p:",
-                                       ["help", "address=", "port="])
-        except getopt.GetoptError as err:
-            print(err)
-            sys.exit(2)
+    parser = argparse.ArgumentParser(description='Default host is 127.0.0.1:7777')
 
-        # default connection settings
-        address = 'localhost'
-        port = 7777
+    parser.add_argument('-a', '--addr', help='ip addres', default='127.0.0.1')
+    parser.add_argument('-p', '--port', help='tcp port', type=int, default=7777)
 
-        for opt, arg in opts:
-            if opt in ("-h", "--help"):
-                print('''    server.py [-a, --address] <address> [-p, --port] <port>
-        default connection settings {0}:{1}'''.format(address, port))
-            elif opt in ("-a", "--address"):
-                address = arg
-            elif opt in ("-p", "--port"):
-                port = arg
+    args = parser.parse_args()
 
-        return (address, port)
+    # ip string validating
+    try:
+        socket.inet_aton(args.addr)
+    except:
+        print('ip address is not correct')
+        quit(3)
+
+    return (args.addr, args.port)
 
 
 def useful_work(sock, conn):
@@ -65,11 +53,11 @@ def useful_work(sock, conn):
     received_data = conn.recv(1024)
     received_data = received_data.decode()
     received_data = json.loads(received_data)
-    print('Received data: {0}'.format(received_data))
+    print('Received data: {0}'.format(received_data['message']))
 
     dic_tmpl = {
-        "article": "connect",
-        "message": "key2"
+        2: 3,
+        3: "Welcome!"
     }
     dic_tmpl = json.dumps(dic_tmpl)
     dic_tmpl = dic_tmpl.encode()

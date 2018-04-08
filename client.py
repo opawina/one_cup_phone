@@ -7,87 +7,58 @@ Beautiful code!
 '''
 
 import socket
-import sys
-import getopt
-import json
+import argparse
+from time import time
+
+from Classes import Client
 
 
 def main():
+
     socket_ = cli_handler()
-    sock = start_client(socket_)
-    useful_work(sock)
+    sock = Client(socket_)
+
+    # аутентификация
+    json_tmpl = sock.json_tmpl
+    json_tmpl['message'] = "Can I come in?"
+    sock.send(json_tmpl)
+    recieve_data = sock.recv()
+    print(recieve_data['3'], 'from server')
+
+    # общаемся
+    while True:
+        inpt = input()
+        sock.json_tmpl['message'] = inpt
+        sock.json_tmpl['time'] = time()
+        sock.send(sock.json_tmpl)
+
+        if inpt == 'stop server':
+            break
+
     sock.close()
-    print('CLOSED')
 
 
 def cli_handler():
-        try:
-            opts, args = getopt.getopt(sys.argv[1:],
-                                       "ha:p:",
-                                       ["help", "address=", "port="])
-        except getopt.GetoptError as err:
-            print(err)
-            sys.exit(2)
 
-        # default connection settings
-        address = 'localhost'
-        port = 7777
+    parser = argparse.ArgumentParser(description='Default host is 127.0.0.1:7777')
 
-        for opt, arg in opts:
-            if opt in ("-h", "--help"):
-                print('''    server.py [-a, --address] <address> [-p, --port] <port>
-        default connection settings {0}:{1}'''.format(address, port))
-            elif opt in ("-a", "--address"):
-                address = arg
-            elif opt in ("-p", "--port"):
-                port = arg
+    parser.add_argument('-a', '--addr', help='ip addres', default='127.0.0.1')
+    parser.add_argument('-p', '--port', help='tcp port', type=int, default=7777)
 
-        return (address, port)
+    args = parser.parse_args()
+
+    # validating ip string
+    try:
+        socket.inet_aton(args.addr)
+    except:
+        print('ip address is not correct')
+        quit(3)
+
+    return (args.addr, args.port)
 
 
-def start_client(socket_):
-    print('+CLIENT START+')
-    sock = socket.socket(family=socket.AF_INET,
-                         type=socket.SOCK_STREAM,
-                         proto=0)
-    sock.connect(socket_)
-    print('CONNECTED TO : {0}'.format(socket_))
-
-    return sock
 
 
-def useful_work(conn):
-    dic_tmpl = {
-        "article": "connect",
-        "message": "key1"
-    }
-
-    # здороваемся
-    print('SENT {0}'.format(dic_tmpl))
-    dic_tmpl = json.dumps(dic_tmpl)
-    dic_tmpl = dic_tmpl.encode('utf-8')
-    conn.send(dic_tmpl)
-
-    received_data = conn.recv(1024)
-    if received_data:
-        print(101)
-        received_data = received_data.decode()
-        received_data = json.loads(received_data)
-        print('ANSWER FROM SERVER : {0}'.format(received_data['message']))
-
-    # cli
-    while True:
-        msg = input()
-
-        dic_tmpl = {}
-        dic_tmpl["article"] = "canal"
-        dic_tmpl["message"] = msg
-        dic_tmpl = json.dumps(dic_tmpl)
-        dic_tmpl = dic_tmpl.encode('utf-8')
-        conn.send(dic_tmpl)
-
-        if msg == "stop server":
-            return 1
 
 
 if __name__ == '__main__':
