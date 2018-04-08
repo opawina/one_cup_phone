@@ -12,22 +12,56 @@ import json
 
 from Classes import Server
 
+# не знаю как использовать методы суперкласса в классе Server
+from Classes import JsonSocketConnector
+
 
 def main():
 
     socket_ = cli_handler()
     sock = Server(socket_)
 
-    while True:
-        conn, con_addr = sock.accept()
-        print('New connect : {}'.format(con_addr))
-        answer = useful_work(sock, conn)
+    ##########################################################################
+    # не знаю как использовать методы суперкласса в классе Server
+    sub_sock, sub_addr = sock.accept_()
 
-        if answer:
+    # print('New connect : {}'.format(sub_addr))
+
+    recv_data = sub_sock.recv(1024)
+    recv_data = recv_data.decode()
+    recv_data = json.loads(recv_data)
+
+    print('Received data: {0}'.format(recv_data['message']))
+
+    dic_tmpl = {
+        2: 3,
+        3: "Welcome!"
+    }
+    dic_tmpl = json.dumps(dic_tmpl)
+    dic_tmpl = dic_tmpl.encode()
+
+    sub_sock.send(dic_tmpl)
+    print('Send welcom to client')
+
+    while True:
+        recv_data = sub_sock.recv(1024)
+        recv_data = recv_data.decode()
+        recv_data = json.loads(recv_data)
+
+        print('Received data: {0}'.format(recv_data['message']))
+
+        ###########################################################################
+
+        # conn, con_addr = sock.accept()
+        # print('New connect : {}'.format(con_addr))
+
+
+        # answer = useful_work(conn)
+        #
+        if recv_data['message'] == 'stop server':
             break
 
     sock.close()
-    print("STOP")
 
 
 def cli_handler():
@@ -48,7 +82,7 @@ def cli_handler():
     return (args.addr, args.port)
 
 
-def useful_work(sock, conn):
+def useful_work(conn):
     # здороваемся
     received_data = conn.recv(1024)
     received_data = received_data.decode()

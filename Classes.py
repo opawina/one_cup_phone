@@ -5,25 +5,29 @@ from time import time
 
 class JsonSocketConnector:
 
-    def __init__(self, sock):
+    def __init__(self):
 
-        self.sock__ = sock
+        self.sock = socket.socket(
+            family=socket.AF_INET,
+            type=socket.SOCK_STREAM,
+            proto=0
+        )
         self.json_tmpl = {
             "action": None,
             "time": None,
             "message": None
         }
 
-    def send(self, data):
+    def send_(self, data):
 
         buf = json.dumps(data)
         buf = buf.encode()
 
-        self.sock__.send(buf)
+        self.sock.send(buf)
 
-    def recv(self):
+    def recv_(self):
 
-        recv_data = self.sock__.recv(1024)
+        recv_data = self.sock.recv(1024)
 
         recv_data = recv_data.decode()
         recv_data = json.loads(recv_data)
@@ -35,13 +39,14 @@ class Client(JsonSocketConnector):
 
     def __init__(self, host):
 
-        self.sock = socket.socket(
-            family=socket.AF_INET,
-            type=socket.SOCK_STREAM,
-            proto=0
-        )
+        super().__init__()
+
+        # self.sock = socket.socket(
+        #     family=socket.AF_INET,
+        #     type=socket.SOCK_STREAM,
+        #     proto=0
+        # )
         self.sock.connect(host)
-        super().__init__(self.sock)
 
         print('+CLIENT START+')
 
@@ -55,21 +60,28 @@ class Server(JsonSocketConnector):
 
     def __init__(self, host):
 
-        self.sock = socket.socket(
-            family=socket.AF_INET,
-            type=socket.SOCK_STREAM,
-            proto=0
-        )
+        super().__init__()
+        # self.sock = socket.socket(
+        #     family=socket.AF_INET,
+        #     type=socket.SOCK_STREAM,
+        #     proto=0
+        # )
         self.sock.bind(host)
         self.sock.listen(5)
 
-        super().__init__(self.sock)
+        self.sub_sock = None
+        self.sub_addr = None
+
 
         print('+SERVER START+\nListening...')
 
-    def accept(self):
+    def accept_(self):
 
-        return self.sock.accept()
+        self.sub_sock, self.sub_addr = self.sock.accept()
+
+        print('New connect : {}'.format(self.sub_addr))
+
+        return self.sub_sock, self.sub_addr
 
     def close(self):
 

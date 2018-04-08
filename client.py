@@ -21,8 +21,8 @@ def main():
     # аутентификация
     json_tmpl = sock.json_tmpl
     json_tmpl['message'] = "Can I come in?"
-    sock.send(json_tmpl)
-    recieve_data = sock.recv()
+    sock.send_(json_tmpl)
+    recieve_data = sock.recv_()
     print(recieve_data['3'], 'from server')
 
     # общаемся
@@ -30,7 +30,7 @@ def main():
         inpt = input()
         sock.json_tmpl['message'] = inpt
         sock.json_tmpl['time'] = time()
-        sock.send(sock.json_tmpl)
+        sock.send_(sock.json_tmpl)
 
         if inpt == 'stop server':
             break
