@@ -10,8 +10,10 @@ from time import time
 
 from Classes import Client
 from utils.cli_handler import cli_handler
+from utils.logging import logging_
 
 
+@logging_
 def main():
 
     socket_ = cli_handler()

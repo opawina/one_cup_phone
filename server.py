@@ -10,10 +10,11 @@ import json
 
 from Classes import Server
 from utils.cli_handler import cli_handler
+from utils.logging import logging_
 
 # не знаю как использовать методы суперкласса в классе Server
 
-
+@logging_
 def main():
 
     socket_ = cli_handler()

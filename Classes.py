@@ -2,9 +2,12 @@ import json
 import socket
 from time import time
 
+from utils.logging import logging_
+
 
 class JsonSocketConnector:
 
+    @logging_
     def __init__(self):
 
         self.sock = socket.socket(
@@ -37,6 +40,7 @@ class JsonSocketConnector:
 
 class Client(JsonSocketConnector):
 
+    @logging_
     def __init__(self, host):
 
         super().__init__()
