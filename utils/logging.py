@@ -1,17 +1,26 @@
+'''
+TODO:
+- хз как достать имя ф вызвавшую данную ф
+'''
+
+
 import logging
 
 
 logging.basicConfig(
     filename='./log_info.log',
     filemode='a',
-    format=u'[%(asctime)s] Function <%(funcName)s> was called by function <%(module)s>',
+    format=u'[%(asctime)s] %(message)s',
     level=logging.INFO
 )
 
 def logging_(func_in):
 
-    def func_():
+    def wrap(*args, **kwargs):
 
-        logging.info('not_used %s')
+        # хз как достать имя ф вызвавшую данную ф
+        logging.info('Function {0} was called by %(module)s'.format(func_in.__name__))
+        return func_in(*args, **kwargs)
 
-    return func_
+
+    return wrap

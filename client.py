@@ -33,7 +33,7 @@ def main():
         sock.json_tmpl['time'] = time()
         sock.send_(sock.json_tmpl)
 
-        if inpt == 'stop server':
+        if inpt == 'ss':
             break
 
     sock.close()

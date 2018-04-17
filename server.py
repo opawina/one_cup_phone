@@ -57,7 +57,7 @@ def main():
 
         # answer = useful_work(conn)
         #
-        if recv_data['message'] == 'stop server':
+        if recv_data['message'] == 'ss':
             break
 
     sock.close()
