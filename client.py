@@ -9,7 +9,7 @@ Beautiful code!
 from time import time
 
 from Classes import Client
-from cli_handler import cli_handler
+from utils.cli_handler import cli_handler
 
 
 def main():

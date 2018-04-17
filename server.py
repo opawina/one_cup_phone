@@ -9,10 +9,9 @@ Beautiful code!
 import json
 
 from Classes import Server
-from cli_handler import cli_handler
+from utils.cli_handler import cli_handler
 
 # не знаю как использовать методы суперкласса в классе Server
-from Classes import JsonSocketConnector
 
 
 def main():
