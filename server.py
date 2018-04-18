@@ -18,49 +18,59 @@ from utils.logging import logging_
 def main():
 
     socket_ = cli_handler()
-    sock = Server(socket_)
+    sockk = Server(socket_)
 
-    ##########################################################################
-    # не знаю как использовать методы суперкласса в классе Server
-    sub_sock, sub_addr = sock.accept_()
+    sockk.accept_()
+    recive = sockk.recv_()
+    print(recive)
 
-    # print('New connect : {}'.format(sub_addr))
-
-    recv_data = sub_sock.recv(1024)
-    recv_data = recv_data.decode()
-    recv_data = json.loads(recv_data)
-
-    print('Received data: {0}'.format(recv_data['message']))
 
     dic_tmpl = {
         2: 3,
         3: "Welcome!"
     }
-    dic_tmpl = json.dumps(dic_tmpl)
-    dic_tmpl = dic_tmpl.encode()
+    sockk.send_(dic_tmpl)
+    # ##########################################################################
+    # # не знаю как использовать методы суперкласса в классе Server
+    # sub_sock, sub_addr = sock.accept_()
+    #
+    # # print('New connect : {}'.format(sub_addr))
+    #
+    # recv_data = sub_sock.recv(1024)
+    # recv_data = recv_data.decode()
+    # recv_data = json.loads(recv_data)
+    #
+    # print('Received data: {0}'.format(recv_data['message']))
+    #
+    # dic_tmpl = {
+    #     2: 3,
+    #     3: "Welcome!"
+    # }
+    # dic_tmpl = json.dumps(dic_tmpl)
+    # dic_tmpl = dic_tmpl.encode()
+    #
+    # sub_sock.send(dic_tmpl)
+    # print('Send welcom to client')
+    #
+    # while True:
+    #     recv_data = sub_sock.recv(1024)
+    #     recv_data = recv_data.decode()
+    #     recv_data = json.loads(recv_data)
+    #
+    #     print('Received data: {0}'.format(recv_data['message']))
+    #
+    #     ###########################################################################
+    #
+    #     # conn, con_addr = sock.accept()
+    #     # print('New connect : {}'.format(con_addr))
+    #
+    #
+    #     # answer = useful_work(conn)
+    #     #
+    #     if recv_data['message'] == 'ss':
+    #         break
 
-    sub_sock.send(dic_tmpl)
-    print('Send welcom to client')
-
-    while True:
-        recv_data = sub_sock.recv(1024)
-        recv_data = recv_data.decode()
-        recv_data = json.loads(recv_data)
-
-        print('Received data: {0}'.format(recv_data['message']))
-
-        ###########################################################################
-
-        # conn, con_addr = sock.accept()
-        # print('New connect : {}'.format(con_addr))
-
-
-        # answer = useful_work(conn)
-        #
-        if recv_data['message'] == 'ss':
-            break
-
-    sock.close()
+    sockk.close()
 
 
 def useful_work(conn):

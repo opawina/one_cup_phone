@@ -17,28 +17,25 @@ from utils.logging import logging_
 def main():
 
     socket_ = cli_handler()
-    sock = Client(socket_)
+    sockk = Client(socket_)
 
     # аутентификация
-    json_tmpl = sock.json_tmpl
+    json_tmpl = sockk.json_tmpl
     json_tmpl['message'] = "Can I come in?"
-    sock.send_(json_tmpl)
-    recieve_data = sock.recv_()
+    sockk.send_(json_tmpl)
+    recieve_data = sockk.recv_()
     print(recieve_data['3'], 'from server')
 
     # общаемся
     while True:
         inpt = input()
-        sock.json_tmpl['message'] = inpt
-        sock.json_tmpl['time'] = time()
-        sock.send_(sock.json_tmpl)
+        sockk.json_tmpl['message'] = inpt
+        sockk.send_(sockk.json_tmpl)
 
         if inpt == 'ss':
             break
 
-    sock.close()
-
-
+    sockk.close()
 
 
 
