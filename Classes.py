@@ -15,7 +15,7 @@ class JsonSocketConnector:
             type=socket.SOCK_STREAM,
             proto=0
         )
-        self.sock = None
+        self.sock = 123123
         self.json_tmpl = {
             "action": None,
             "time": None,
@@ -23,11 +23,11 @@ class JsonSocketConnector:
         }
 
     @logging_
-    def send_(self, data):
+    def send_(self):
 
-        buf = json.dumps(data)
+        buf = json.dumps(self.json_tmpl)
         buf = buf.encode()
-        print('sock in send', self.sock)
+
         self.sock.send(buf)
 
     @logging_
@@ -49,9 +49,8 @@ class Client(JsonSocketConnector):
 
         super().__init__()
 
-        self.sock = self.sock_main.connect(host)
-        print('sock_main in client', self.sock_main)
-        print('sock in client', self.sock)
+        self.sock = self.sock_main
+        self.sock.connect(host)
 
         print('+CLIENT START+')
 
@@ -84,7 +83,7 @@ class Server(JsonSocketConnector):
 
         self.sock, self.sub_addr = self.sock_main.accept()
 
-        print('New connect : {}'.format(self.sub_addr))
+        print('New connect: {}'.format(self.sub_addr))
 
         # return self.sock, self.sub_addr
 

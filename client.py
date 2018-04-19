@@ -20,17 +20,16 @@ def main():
     sockk = Client(socket_)
 
     # аутентификация
-    json_tmpl = sockk.json_tmpl
-    json_tmpl['message'] = "Can I come in?"
-    sockk.send_(json_tmpl)
+    sockk.json_tmpl['message'] = "Can I come in?"
+    sockk.send_()
     recieve_data = sockk.recv_()
-    print(recieve_data['3'], 'from server')
+    print('From server:', recieve_data['message'])
 
     # общаемся
     while True:
         inpt = input()
         sockk.json_tmpl['message'] = inpt
-        sockk.send_(sockk.json_tmpl)
+        sockk.send_()
 
         if inpt == 'ss':
             break
