@@ -14,7 +14,7 @@ logging.basicConfig(
     level=logging.INFO
 )
 
-def logging_(func_in):
+def log(func_in):
 
     def wrap(*args, **kwargs):
 

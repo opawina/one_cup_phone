@@ -2,12 +2,12 @@ import json
 import socket
 from time import time
 
-from utils.logging import logging_
+from utils.logging import log
 
 
 class JsonSocketConnector:
 
-    @logging_
+    @log
     def __init__(self):
 
         self.sock_main = socket.socket(
@@ -22,7 +22,7 @@ class JsonSocketConnector:
             "message": None
         }
 
-    @logging_
+    @log
     def send_(self):
 
         buf = json.dumps(self.json_tmpl)
@@ -30,7 +30,7 @@ class JsonSocketConnector:
 
         self.sock.send(buf)
 
-    @logging_
+    @log
     def recv_(self):
 
         recv_data = self.sock.recv(1024)
@@ -44,7 +44,7 @@ class JsonSocketConnector:
 
 class Client(JsonSocketConnector):
 
-    @logging_
+    @log
     def __init__(self, host):
 
         super().__init__()
@@ -54,7 +54,7 @@ class Client(JsonSocketConnector):
 
         print('+CLIENT START+')
 
-    @logging_
+    @log
     def close(self):
 
         self.sock_main.close()
@@ -65,7 +65,7 @@ class Client(JsonSocketConnector):
 
 class Server(JsonSocketConnector):
 
-    @logging_
+    @log
     def __init__(self, host):
 
         super().__init__()
@@ -78,7 +78,7 @@ class Server(JsonSocketConnector):
 
         print('+SERVER START+\nListening...')
 
-    @logging_
+    @log
     def accept_(self):
 
         self.sock, self.sub_addr = self.sock_main.accept()
@@ -87,7 +87,7 @@ class Server(JsonSocketConnector):
 
         # return self.sock, self.sub_addr
 
-    @logging_
+    @log
     def close(self):
 
         self.sock_main.close()

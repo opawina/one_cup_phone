@@ -1,9 +1,9 @@
 import socket
 import argparse
-from utils.logging import logging_
+from utils.logging import log
 
 
-@logging_
+@log
 def cli_handler():
 
     parser = argparse.ArgumentParser(description='Default host is 127.0.0.1:7777')
