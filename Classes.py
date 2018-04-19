@@ -10,24 +10,27 @@ class JsonSocketConnector:
     @logging_
     def __init__(self):
 
-        self.sock = socket.socket(
+        self.sock_main = socket.socket(
             family=socket.AF_INET,
             type=socket.SOCK_STREAM,
             proto=0
         )
+        self.sock = 123123
         self.json_tmpl = {
             "action": None,
             "time": None,
             "message": None
         }
 
-    def send_(self, data):
+    @logging_
+    def send_(self):
 
-        buf = json.dumps(data)
+        buf = json.dumps(self.json_tmpl)
         buf = buf.encode()
 
         self.sock.send(buf)
 
+    @logging_
     def recv_(self):
 
         recv_data = self.sock.recv(1024)
@@ -38,6 +41,7 @@ class JsonSocketConnector:
         return recv_data
 
 
+
 class Client(JsonSocketConnector):
 
     @logging_
@@ -45,50 +49,48 @@ class Client(JsonSocketConnector):
 
         super().__init__()
 
-        # self.sock = socket.socket(
-        #     family=socket.AF_INET,
-        #     type=socket.SOCK_STREAM,
-        #     proto=0
-        # )
+        self.sock = self.sock_main
         self.sock.connect(host)
 
         print('+CLIENT START+')
 
+    @logging_
     def close(self):
 
+        self.sock_main.close()
         self.sock.close()
         print('+CLOSE CONNECTION+')
 
 
+
 class Server(JsonSocketConnector):
 
+    @logging_
     def __init__(self, host):
 
         super().__init__()
-        # self.sock = socket.socket(
-        #     family=socket.AF_INET,
-        #     type=socket.SOCK_STREAM,
-        #     proto=0
-        # )
-        self.sock.bind(host)
-        self.sock.listen(5)
 
-        self.sub_sock = None
+        self.sock_main.bind(host)
+        self.sock_main.listen(5)
+
+        # self.sub_sock = None
         self.sub_addr = None
-
 
         print('+SERVER START+\nListening...')
 
+    @logging_
     def accept_(self):
 
-        self.sub_sock, self.sub_addr = self.sock.accept()
+        self.sock, self.sub_addr = self.sock_main.accept()
 
-        print('New connect : {}'.format(self.sub_addr))
+        print('New connect: {}'.format(self.sub_addr))
 
-        return self.sub_sock, self.sub_addr
+        # return self.sock, self.sub_addr
 
+    @logging_
     def close(self):
 
+        self.sock_main.close()
         self.sock.close()
         print("+STOP SERVER+")
 
