@@ -75,26 +75,39 @@ class Server(JsonSocketConnector):
 
         self.sock_main.bind(host)
         self.sock_main.listen(5)
+        self.sock_main.settimeout(3)
+
+        self.client_socks = []
+
 
         print('+SERVER START+\nListening...')
 
     def __enter__(self):
+
         return self
 
     @log
     def __exit__(self, exc_type, exc_val, exc_tb):
 
         self.sock_main.close()
-        self.sock.close()
+        if self.client_socks:
+            [sock.close() for sock in self.client_socks]
 
         print("+STOP SERVER+")
 
     @log
     def accept_(self):
 
-        self.sock, self.sub_addr = self.sock_main.accept()
+        try:
+            sock, sub_addr = self.sock_main.accept()
+            self.client_socks.append(sock)
+            print('New connect: {}'.format(sub_addr))
+        except OSError as e:
+            pass
 
-        print('New connect: {}'.format(self.sub_addr))
+        return self.client_socks
+
+
 
 
 
