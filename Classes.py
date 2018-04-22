@@ -15,7 +15,7 @@ class JsonSocketConnector:
             type=socket.SOCK_STREAM,
             proto=0
         )
-        self.sock = 123123
+        self.sock = None
         self.json_tmpl = {
             "action": None,
             "time": None,
@@ -54,11 +54,14 @@ class Client(JsonSocketConnector):
 
         print('+CLIENT START+')
 
-    @log
-    def close(self):
+    def __enter__(self):
+        return self
 
+    @log
+    def __exit__(self, exc_type, exc_val, exc_tb):
         self.sock_main.close()
         self.sock.close()
+
         print('+CLOSE CONNECTION+')
 
 
@@ -73,10 +76,18 @@ class Server(JsonSocketConnector):
         self.sock_main.bind(host)
         self.sock_main.listen(5)
 
-        # self.sub_sock = None
-        self.sub_addr = None
-
         print('+SERVER START+\nListening...')
+
+    def __enter__(self):
+        return self
+
+    @log
+    def __exit__(self, exc_type, exc_val, exc_tb):
+
+        self.sock_main.close()
+        self.sock.close()
+
+        print("+STOP SERVER+")
 
     @log
     def accept_(self):
@@ -85,21 +96,13 @@ class Server(JsonSocketConnector):
 
         print('New connect: {}'.format(self.sub_addr))
 
-        # return self.sock, self.sub_addr
-
-    @log
-    def close(self):
-
-        self.sock_main.close()
-        self.sock.close()
-        print("+STOP SERVER+")
 
 
 
 
+'''
 
-
-
-
+cd PycharmProjects\one_cup_phone
+'''
 
 

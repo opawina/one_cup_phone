@@ -17,9 +17,9 @@ from utils.logging import log
 def main():
 
     socket_ = cli_handler()
-    sockk = Server(socket_)
+    with Server(socket_) as sockk:
 
-    while True:
+        # while True:
         sockk.accept_()
         recive = sockk.recv_()
         print('From client:', recive['message'])
@@ -34,7 +34,6 @@ def main():
             if recive['message'] == 'ss':
                 break
 
-    sockk.close()
 
 
 
