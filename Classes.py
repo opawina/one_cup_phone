@@ -22,6 +22,7 @@ class JsonSocketConnector:
             "message": None
         }
 
+
     @log
     def send_(self):
 
@@ -29,6 +30,7 @@ class JsonSocketConnector:
         buf = buf.encode()
 
         self.sock.send(buf)
+
 
     @log
     def recv_(self):
@@ -54,11 +56,13 @@ class Client(JsonSocketConnector):
 
         print('+CLIENT START+')
 
+
     def __enter__(self):
         return self
 
     @log
     def __exit__(self, exc_type, exc_val, exc_tb):
+
         self.sock_main.close()
         self.sock.close()
 
@@ -79,12 +83,13 @@ class Server(JsonSocketConnector):
 
         self.client_socks = []
 
-
         print('+SERVER START+\nListening...')
+
 
     def __enter__(self):
 
         return self
+
 
     @log
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -94,6 +99,7 @@ class Server(JsonSocketConnector):
             [sock.close() for sock in self.client_socks]
 
         print("+STOP SERVER+")
+
 
     @log
     def accept_(self):

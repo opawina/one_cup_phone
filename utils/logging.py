@@ -22,5 +22,4 @@ def log(func_in):
         logging.info('Function {0} was called by %(module)s'.format(func_in.__name__))
         return func_in(*args, **kwargs)
 
-
     return wrap
