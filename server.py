@@ -22,33 +22,42 @@ def main():
 
         b = 0
         while True:
-            b += 3000
+
+            break_ = False
             r, w, e = [], [], []
             socks = sockk.accept_()
-
             try:
                 r, w, e = select(socks, socks, socks, 0)
             except Exception as e:
-                print(1111111, e)
+                pass
 
-            for sock in w:
-                a = b
-                a = json.dumps(a)
-                sock.send(a.encode())
+            for sock_r in r:
+                try:
+                    recv_data = sock_r.recv(1024)
+                    recv_data = recv_data.decode()
+                    recv_data = json.loads(recv_data)
+                    print(recv_data['message'])
+                except:
+                    print('r CLIENT SOCKET CLOSED', sock_r)
+                    socks.remove(sock_r)
+                else:
+                    if recv_data['message'] == 'ss':
+                        break_ = True
+                finally:
+                    recv_data = json.dumps(recv_data)
+                    recv_data = recv_data.encode()
+
+                    for sock_w in w:
+                        try:
+                            sock_w.send(recv_data)
+                        except:
+                            print('w CLIENT SOCKET CLOSED', sock_w)
+                            socks.remove(sock_w)
 
 
-            # recive = sockk.recv_()
-            # print('From client:', recive['message'])
-            #
-            # sockk.json_tmpl['message'] = 'Welcome!'
-            # sockk.send_()
-            #
-            # while True:
-            #     recive = sockk.recv_()
-            #     print(recive['message'])
-            #
-            #     if recive['message'] == 'ss':
-            #         break
+            if break_:
+                break
+        # явно не закрываем соединеие т.к. используется менеджер контекста
 
 
 
@@ -56,8 +65,6 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-
 
 
 

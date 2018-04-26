@@ -1,3 +1,9 @@
+'''
+Месенджер. Все со всеми (Групповой чат). Пока.
+Сервер принимает от клиента и передает всем подключениям.
+'''
+
+
 import json
 import socket
 from time import time
@@ -15,7 +21,8 @@ class JsonSocketConnector:
             type=socket.SOCK_STREAM,
             proto=0
         )
-        self.sock = None
+        self.socks_write = []
+        self.socks_read = []
         self.json_tmpl = {
             "action": None,
             "time": None,
@@ -53,6 +60,7 @@ class Client(JsonSocketConnector):
 
         self.sock = self.sock_main
         self.sock.connect(host)
+        self.sock.settimeout(1)
 
         print('+CLIENT START+')
 
@@ -79,7 +87,7 @@ class Server(JsonSocketConnector):
 
         self.sock_main.bind(host)
         self.sock_main.listen(5)
-        self.sock_main.settimeout(3)
+        self.sock_main.settimeout(1)
 
         self.client_socks = []
 

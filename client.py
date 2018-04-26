@@ -19,21 +19,20 @@ def main():
     socket_ = cli_handler()
     with Client(socket_) as sockk:
 
-        # # аутентификация
-        # sockk.json_tmpl['message'] = "Can I come in?"
-        # sockk.send_()
-        # recieve_data = sockk.recv_()
-        # print('From server:', recieve_data['message'])
-
         # общаемся
         while True:
-            print(sockk.recv_())
-            # inpt = input()
-            # sockk.json_tmpl['message'] = inpt
-            # sockk.send_()
-            #
-            # if inpt == 'ss':
-            #     break
+            try:
+                recv_data = sockk.recv_()
+                print('RECIVE:', recv_data['message'])
+            except:
+                pass
+            finally:
+                inpt = input()
+                sockk.json_tmpl['message'] = inpt
+                sockk.send_()
+
+                if inpt == 'ss':
+                    break
     # явно не закрываем соединеие т.к. используется менеджер контекста
 
 
