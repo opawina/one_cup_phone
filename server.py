@@ -8,10 +8,12 @@ Beautiful code!
 
 import json
 from select import select
+import os
 
 from Classes import Server
 from utils.cli_handler import cli_handler
 from utils.logging import log
+from db_initiation import db_initiation
 
 
 @log
@@ -19,6 +21,10 @@ def main():
 
     socket_ = cli_handler()
     with Server(socket_) as sockk:
+
+        # Если не было, создаем на сервере БД с необходимыми таблицами.
+        if not 'twocups.db' in os.listdir():
+            db_initiation()
 
         b = 0
         while True:
