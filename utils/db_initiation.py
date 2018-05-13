@@ -1,17 +1,15 @@
 import sqlite3
-import sqlalchemy
-import datetime
-import os
+
 
 # Если не было, создаем на сервере БД с необходимыми таблицами.
 def db_initiation():
-    conn = sqlite3.connect('twocups.db')
+    conn = sqlite3.connect('../twocups.db')
     conn.cursor()
 
     conn.execute('''
     CREATE TABLE IF NOT EXISTS users (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
-      name TEXT UNIQUE,
+      login TEXT UNIQUE,
       date TEXT,
       host TEXT 
     );
@@ -36,4 +34,8 @@ def db_initiation():
     ''')
 
     conn.commit()
-    conn.close()
+    # conn.close()
+
+
+if __name__ == '__main__':
+    db_initiation()

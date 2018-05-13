@@ -13,7 +13,7 @@ import os
 from Classes import Server
 from utils.cli_handler import cli_handler
 from utils.logging import log
-from db_initiation import db_initiation
+from utils.db_initiation import db_initiation
 
 
 @log

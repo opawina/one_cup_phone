@@ -169,16 +169,7 @@ class Server(JsonSocketConnector):
 
 
 
-class DBase:
 
-    print(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
-
-    '''
-
-    '''
-
-    def __init__(self):
-        pass
 
 
 
