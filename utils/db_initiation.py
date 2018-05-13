@@ -29,7 +29,8 @@ def db_initiation():
     CREATE TABLE IF NOT EXISTS users_list_contacts (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       id_user INTEGER REFERENCES users (id),
-      id_contact INTEGER REFERENCES users (id)
+      id_contact INTEGER REFERENCES users (id),
+      UNIQUE (id_user, id_contact)
     );
     ''')
 
