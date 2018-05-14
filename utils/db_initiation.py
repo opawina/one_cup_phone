@@ -34,8 +34,13 @@ def db_initiation():
     );
     ''')
 
+    # включаю зависимость внешних ключей
+    conn.execute('''
+    PRAGMA foreign_keys = ON;
+    ''')
+
     conn.commit()
-    # conn.close()
+    conn.close()
 
 
 if __name__ == '__main__':

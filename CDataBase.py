@@ -10,41 +10,41 @@ DBase = declarative_base()
 
 class TUsers(DBase):
 
-    __tablename__ = 'users'
+    __tablename__ = "users"
 
     id = Column(Integer(), primary_key=True)
     login = Column(Unicode())
     date = Column(Unicode())
     host = Column(Unicode())
 
-    check_1 = UniqueConstraint('login')
+    check_1 = UniqueConstraint("login")
 
 
 class THistory(DBase):
 
-    __tablename__ = 'users_history'
+    __tablename__ = "users_history"
 
     id = Column(Integer(), primary_key=True)
-    id_user = Column(Integer(), ForeignKey('users.id'))
+    id_user = Column(Integer(), ForeignKey("users.id"))
     message = Column(Unicode())
     date = Column(Unicode())
     id_chat = Column(Integer)
 
-    fk_id_user = relationship('TUsers', foreign_keys=[id_user])
+    fk_id_user = relationship("TUsers", foreign_keys=[id_user])
 
 
 class TListContact(DBase):
 
-    __tablename__ = 'users_list_contacts'
+    __tablename__ = "users_list_contacts"
 
     id = Column(Integer(), primary_key=True)
-    id_user = Column(Integer, ForeignKey('users.id'))
-    id_contact = Column(Integer, ForeignKey('users.id'))
+    id_user = Column(Integer, ForeignKey("users.id"))
+    id_contact = Column(Integer, ForeignKey("users.id"))
 
-    check_1 = UniqueConstraint('id_user', 'id_contact')
+    check_1 = UniqueConstraint("id_user", "id_contact")
 
-    fk_id_user = relationship('TUsers', foreign_keys=[id_user])
-    fk_id_contact = relationship('TUsers', foreign_keys=[id_contact])
+    fk_id_user = relationship("TUsers", foreign_keys=[id_user])
+    fk_id_contact = relationship("TUsers", foreign_keys=[id_contact])
 
 
     # def __repr__(self):
@@ -59,9 +59,9 @@ session = sessionmaker(bind=engine)()
 # шаблоны типовых операций
 
 # # добавление нового юзера в БД
-# login = 'qweqwe231'
-# date_now = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-# host = '133.15.157.12:12674'
+# login = "qweqwe231"
+# date_now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+# host = "133.15.157.12:12674"
 #
 # insert_new_user = TUsers(login=login, date=date_now, host=host)
 # session.add(insert_new_user)
@@ -72,8 +72,8 @@ session = sessionmaker(bind=engine)()
 
 # # добавляем факт истории
 # id_user = 4
-# message = 'Hello 123'
-# date = 'date_of_sending_from_client'
+# message = "Hello 123"
+# date = "date_of_sending_from_client"
 # id_chat = 121
 #
 # insert_new_fact = THistory(id_user=id_user, message=message, date=date,
@@ -81,7 +81,7 @@ session = sessionmaker(bind=engine)()
 # session.add(insert_new_fact)
 
 # # Добавляем юзера в список контактов
-id_user = 2
+id_user = 1
 id_contact = 5
 
 # insert_new_contact = TListContact(id_user=id_user, id_contact=id_contact)
@@ -92,10 +92,9 @@ id_contact = 5
 #                                       id_contact=id_contact).delete()
 #
 # получаю весь список контактов
-# КАК ДЕЛАЬ JOIN????????????
-user_list_contacts = session.query(TListContact, TUsers).filter(
+user_list_contacts = session.query(TUsers).filter(
     TListContact.id_user==id_user).filter(
     TListContact.id_contact==TUsers.id).all()
-print(user_list_contacts)
+list_contacts = [item.login for item in user_list_contacts]
 
 session.commit()
