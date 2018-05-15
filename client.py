@@ -1,17 +1,11 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-
-
 '''
 Beautiful code!
 '''
 
-from time import time
-
-from Classes import Client
+from MessagerClasses.CClient import Client
 from utils.cli_handler import cli_handler
 from utils.logging import log
-
 
 @log
 def main():
