@@ -60,7 +60,8 @@ from utils.logging import log
 from utils.db_initiation import db_initiation
 
 
-from socketserver import TCPServer, StreamRequestHandler
+from socketserver import TCPServer, ThreadingMixIn, StreamRequestHandler
+import threading
 from time import time
 
 
@@ -82,13 +83,22 @@ def main():
                     break
 
                 if data:
-                    print(data)
+                    print(self.client_address, '->', data)
 
-                # self.wfile.write(str(time()).encode())
+                self.wfile.write(str(time()).encode())
 
 
-    server = TCPServer(socket_, CTCPHandler)
-    server.serve_forever()
+    class CThreadedTCPServer(ThreadingMixIn, TCPServer):
+        pass
+
+    server = CThreadedTCPServer(socket_, CTCPHandler)
+
+    server_thread = threading.Thread(target=server.serve_forever())
+    server_thread.daemon = True
+    server_thread.start()
+
+    server.shutdown()
+    server.server_close()
 
 
 
