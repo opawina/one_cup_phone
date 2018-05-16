@@ -60,10 +60,50 @@ from utils.logging import log
 from utils.db_initiation import db_initiation
 
 
+from socketserver import TCPServer, StreamRequestHandler
+from time import time
+
+
 @log
 def main():
 
     socket_ = cli_handler()
+
+    class CTCPHandler(StreamRequestHandler):
+
+        def handle(self):
+
+            print("New connection:", self.client_address)
+
+            while True:
+                data = self.rfile.readline().decode()[:-1]
+
+                if data == 'ss':
+                    break
+
+                if data:
+                    print(data)
+
+                # self.wfile.write(str(time()).encode())
+
+
+    server = TCPServer(socket_, CTCPHandler)
+    server.serve_forever()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     # with Server(socket_) as sockk:
     #
     #     # Если не было, создаем на сервере БД с необходимыми таблицами.
