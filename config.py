@@ -1,11 +1,11 @@
 class DATABASE:
 
-    DBNAME = 'twocups.db'
+    DBNAME = '../dwh/twocups.db'
 
 
 class LOGGING:
 
-    LOGFILE = './utils/log_info.log'
+    LOGFILE = './dwh/log_info.log'
 
 
 class HOST:

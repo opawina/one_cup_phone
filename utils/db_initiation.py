@@ -5,7 +5,7 @@ from config import DATABASE
 
 # Если не было, создаем на сервере БД с необходимыми таблицами.
 def db_initiation():
-    conn = sqlite3.connect('../' + DATABASE.DBNAME)
+    conn = sqlite3.connect(DATABASE.DBNAME)
     conn.cursor()
 
     conn.execute('''
