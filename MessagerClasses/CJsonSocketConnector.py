@@ -4,6 +4,28 @@ import socket
 from utils.logging import log
 
 
+msg_tmpl_client = {
+    'new_user': {},
+    'authorization': {},
+    # 'get_all_users': {},
+    # 'add_user_list_contacts': {},
+    # 'del_user_list_contacts': {},
+    'start_chat_privat': {},
+    # 'start_chat_group': {},
+    'message': {},
+    'exit_chat': {},
+    'close_messager': {}
+}
+msg_tmpl_server = {
+    'response': True,
+    'sent_all_users': {},
+    # 'sent_list_contacts': {},
+    'start_chat_privat': {},
+    # 'start_chat_group': {},
+    'message': {}
+}
+
+
 class JsonSocketConnector:
 
     @log
