@@ -60,9 +60,10 @@ from utils.logging import log
 from utils.db_initiation import db_initiation
 
 
-from socketserver import TCPServer, ThreadingMixIn, StreamRequestHandler
+from socketserver import StreamRequestHandler, ThreadingTCPServer
 import threading
 from time import time
+import queue
 
 
 # @log
@@ -79,24 +80,30 @@ def main():
             list_hosts.append(self.client_address)
 
             while True:
+                if q.get():
+                    self.wfile.write(str(time()).encode())
+
+
                 data = self.rfile.readline().decode()[:-1]
 
                 if data == 'ss':
                     break
 
+                q.put(data)
+
                 if data:
                     print(self.client_address, '->', data)
 
-                print(self.wfile._sock)
-                # self.wfile
                 self.wfile.write(str(time()).encode())
                 print(list_hosts)
 
 
-    class CThreadedTCPServer(ThreadingMixIn, TCPServer):pass
+    class CThreadingTCPServer(ThreadingTCPServer):pass
 
     list_hosts = []
-    server = CThreadedTCPServer(socket_, CTCPHandler)
+    q = queue.Queue()
+    msg = None
+    server = CThreadingTCPServer(socket_, CTCPHandler)
 
     server_thread = threading.Thread(target=server.serve_forever())
     server_thread.daemon = False
