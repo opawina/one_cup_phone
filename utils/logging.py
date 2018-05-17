@@ -6,9 +6,11 @@ TODO:
 
 import logging
 
+from config import LOGGING
+
 
 logging.basicConfig(
-    filename='./log_info.log',
+    filename=LOGGING.LOGFILE,
     filemode='a',
     format=u'[%(asctime)s] %(message)s',
     level=logging.INFO

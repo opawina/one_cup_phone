@@ -1,11 +1,14 @@
-class BLA:
+class DATABASE:
 
-    BLA1 = 1
-    BLA2 = 2
+    DBNAME = 'twocups.db'
 
 
-class FEE:
+class LOGGING:
 
-    FEE1 = 1
-    FEE2 = 2
+    LOGFILE = './utils/log_info.log'
 
+
+class HOST:
+
+    IP = '127.0.0.1'
+    PORT = '7777'

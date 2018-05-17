@@ -52,6 +52,10 @@
 import json
 from select import select
 import os
+from socketserver import StreamRequestHandler, ThreadingTCPServer
+import threading
+from time import time
+import queue
 
 
 from MessagerClasses.CServer import Server
@@ -60,10 +64,6 @@ from utils.logging import log
 from utils.db_initiation import db_initiation
 
 
-from socketserver import StreamRequestHandler, ThreadingTCPServer
-import threading
-from time import time
-import queue
 
 
 # @log
@@ -73,28 +73,35 @@ def main():
 
     class CTCPHandler(StreamRequestHandler):
 
+
         def handle(self):
 
             print("New connection:", self.client_address)
 
             list_hosts.append(self.client_address)
 
-            while True:
-                if q.get():
-                    self.wfile.write(str(time()).encode())
+            msg = None
 
+            while True:
+
+                try:
+                    msg = q.get(block=False)
+                    print('FROM Q:', msg)
+                except:
+                    pass
+
+                if msg:
+                    self.wfile.write(msg.encode())
 
                 data = self.rfile.readline().decode()[:-1]
 
                 if data == 'ss':
                     break
 
-                q.put(data)
-
                 if data:
+                    q.put(data)
                     print(self.client_address, '->', data)
 
-                self.wfile.write(str(time()).encode())
                 print(list_hosts)
 
 
@@ -111,17 +118,6 @@ def main():
 
     server.shutdown()
     server.server_close()
-
-
-
-
-
-
-
-
-
-
-
 
 
 

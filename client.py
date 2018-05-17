@@ -1,15 +1,18 @@
-#!/usr/bin/env python3
 '''
 Beautiful code!
 '''
+
+import threading
+import queue
+import socket
 
 from MessagerClasses.CClient import Client
 from utils.cli_handler import cli_handler
 from utils.logging import log
 
-import socket
 
-# @log
+
+@log
 def main():
 
     socket_ = cli_handler()
@@ -32,12 +35,6 @@ def main():
     finally:
         print('END')
         sock.close()
-
-
-
-
-
-
 
 
 

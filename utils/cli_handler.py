@@ -1,15 +1,21 @@
 import socket
 import argparse
+
 from utils.logging import log
+from config import HOST
+
+
+ip = HOST.IP
+port = HOST.PORT
 
 
 @log
 def cli_handler():
 
-    parser = argparse.ArgumentParser(description='Default host is 127.0.0.1:7777')
+    parser = argparse.ArgumentParser(description='Default host is {}:{}'.format(ip, port))
 
-    parser.add_argument('-a', '--addr', help='ip addres', default='127.0.0.1')
-    parser.add_argument('-p', '--port', help='tcp port', type=int, default=7777)
+    parser.add_argument('-a', '--addr', help='ip addres', default=ip)
+    parser.add_argument('-p', '--port', help='tcp port', type=int, default=port)
 
     args = parser.parse_args()
 
