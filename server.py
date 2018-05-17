@@ -65,7 +65,7 @@ import threading
 from time import time
 
 
-@log
+# @log
 def main():
 
     socket_ = cli_handler()
@@ -76,6 +76,8 @@ def main():
 
             print("New connection:", self.client_address)
 
+            list_hosts.append(self.client_address)
+
             while True:
                 data = self.rfile.readline().decode()[:-1]
 
@@ -85,16 +87,19 @@ def main():
                 if data:
                     print(self.client_address, '->', data)
 
+                print(self.wfile._sock)
+                # self.wfile
                 self.wfile.write(str(time()).encode())
+                print(list_hosts)
 
 
-    class CThreadedTCPServer(ThreadingMixIn, TCPServer):
-        pass
+    class CThreadedTCPServer(ThreadingMixIn, TCPServer):pass
 
+    list_hosts = []
     server = CThreadedTCPServer(socket_, CTCPHandler)
 
     server_thread = threading.Thread(target=server.serve_forever())
-    server_thread.daemon = True
+    server_thread.daemon = False
     server_thread.start()
 
     server.shutdown()

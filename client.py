@@ -9,7 +9,7 @@ from utils.logging import log
 
 import socket
 
-@log
+# @log
 def main():
 
     socket_ = cli_handler()
