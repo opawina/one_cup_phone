@@ -2,9 +2,8 @@
 Beautiful code!
 '''
 
-import threading
-import queue
 import socket
+from multiprocessing import Process
 
 from MessagerClasses.CClient import Client
 from utils.cli_handler import cli_handler
@@ -12,26 +11,59 @@ from utils.logging import log
 
 
 
-@log
+# @log
 def main():
 
     socket_ = cli_handler()
 
+    # global sock
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.connect(socket_)
+
 
     try:
-        while True:
-            data = input() + '\n'
 
-            if data == 'ss':
-                break
+        sock.connect(socket_)
 
-            sock.sendall(bytes(data, 'utf-8'))
+        received = None
 
-            received = str(sock.recv(1024), "utf-8")
-            print(received)
-        print(11)
+        def inpt(sock):
+
+            # nonlocal sock
+
+            while True:
+
+                if received:
+                    print(received)
+
+                data = input() + '\n'
+
+                if data == 'ss':
+                    break
+
+                sock.sendall(bytes(data, 'utf-8'))
+
+        def recv(sock):
+
+            # nonlocal sock
+
+            nonlocal received
+
+            print('RECV')
+            while True:
+                received = str(sock.recv(1024), "utf-8")
+                print(received)
+
+        print(2)
+        p2 = Process(target=recv, args=(sock,))
+        print(2)
+        p1 = Process(target=inpt, args=(sock,))
+        print(2)
+
+        print(1)
+        p2.start()
+        print(1)
+        p1.start()
+
     finally:
         print('END')
         sock.close()

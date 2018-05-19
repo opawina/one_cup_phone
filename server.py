@@ -73,29 +73,30 @@ def main():
 
     class CTCPHandler(StreamRequestHandler):
 
-
         def handle(self):
 
             print("New connection:", self.client_address)
 
             list_hosts.append(self.client_address)
 
-            msg = None
+            msg = '123321'
 
             while True:
 
-                try:
-                    msg = q.get(block=False)
-                    print('FROM Q:', msg)
-                except:
-                    pass
-
-                if msg:
-                    self.wfile.write(msg.encode())
+                # try:
+                #     msg = q.get(block=False)
+                #     print('FROM Q:', msg)
+                # except:
+                #     pass
+                #
+                # if msg:
+                print('SEND', msg)
+                self.wfile.write(msg.encode())
 
                 data = self.rfile.readline().decode()[:-1]
 
                 if data == 'ss':
+                    print(self.client_address, 'BREAK')
                     break
 
                 if data:
