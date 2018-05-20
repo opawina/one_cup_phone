@@ -60,7 +60,7 @@ import queue
 
 from MessagerClasses.CServer import Server
 from utils.cli_handler import cli_handler
-from utils.logging import log
+from utils.logging_ import log
 from utils.db_initiation import db_initiation
 
 
@@ -75,11 +75,13 @@ def main():
 
         def handle(self):
 
+            self.connection.settimeout(2)
+
             print("New connection:", self.client_address)
 
             list_hosts.append(self.client_address)
 
-            msg = '123321'
+            msg = 100
 
             while True:
 
@@ -91,17 +93,22 @@ def main():
                 #
                 # if msg:
                 print('SEND', msg)
-                self.wfile.write(msg.encode())
+                self.wfile.write(str(msg).encode())
+                msg += 100
 
-                data = self.rfile.readline().decode()[:-1]
+                try:
+                    data = self.rfile.readline().decode()[:-1]
 
-                if data == 'ss':
-                    print(self.client_address, 'BREAK')
-                    break
+                    if data == 'ss':
+                        print(self.client_address, 'BREAK')
+                        break
 
-                if data:
-                    q.put(data)
-                    print(self.client_address, '->', data)
+                    if data:
+                        q.put(data)
+                        print(self.client_address, '->', data)
+
+                except Exception as E:
+                    print(E)
 
                 print(list_hosts)
 

@@ -3,70 +3,79 @@ Beautiful code!
 '''
 
 import socket
-from multiprocessing import Process
+from multiprocessing import Process, current_process
 
 from MessagerClasses.CClient import Client
 from utils.cli_handler import cli_handler
-from utils.logging import log
+from utils.logging_ import log
 
 
-
+from time import sleep
 # @log
-def main():
+# def main():
 
-    socket_ = cli_handler()
 
-    # global sock
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+socket_ = cli_handler()
+sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
+# global send
+send = None
+
+def inpt():
+    print('INPT BEGINS')
+    print(current_process().name)
+
+    # global send
+
+    while True:
+        print('IN INPT LOOP')
+
+        # try:
+        #     send = input('ENTER MSG ->') + '\n'
+        #
+        #     if send == 'ss':
+        #         break
+        # except EOFError as E:
+        #     print(E)
+        sleep(4)
+
+
+def sock_work():
+    print('SOCK WORK BEGINS')
+    print(current_process().name)
 
     try:
-
         sock.connect(socket_)
 
-        received = None
+        send = None
 
-        def inpt(sock):
+        while True:
+            print('IN SOCK LOOP')
 
-            # nonlocal sock
+            if send:
+                print('SEND')
+                sock.sendall(bytes(send, 'utf-8'))
+            send = None
 
-            while True:
-
-                if received:
-                    print(received)
-
-                data = input() + '\n'
-
-                if data == 'ss':
-                    break
-
-                sock.sendall(bytes(data, 'utf-8'))
-
-        def recv(sock):
-
-            # nonlocal sock
-
-            nonlocal received
-
-            print('RECV')
-            while True:
-                received = str(sock.recv(1024), "utf-8")
-                print(received)
-
-        print(2)
-        p2 = Process(target=recv, args=(sock,))
-        print(2)
-        p1 = Process(target=inpt, args=(sock,))
-        print(2)
-
-        print(1)
-        p2.start()
-        print(1)
-        p1.start()
+            received = str(sock.recv(1024), "utf-8")
+            print(received)
 
     finally:
         print('END')
         sock.close()
+
+
+if __name__ == '__main__':
+
+    p1 = Process(target=inpt)
+    p2 = Process(target=sock_work)
+
+    p1.start()
+    p2.start()
+
+    while True:
+        print(current_process().name)
+        sleep(1)
 
 
 
@@ -97,8 +106,8 @@ def main():
 
 
 
-if __name__ == '__main__':
-    main()
+# if __name__ == '__main__':
+    # main()
 
 
 

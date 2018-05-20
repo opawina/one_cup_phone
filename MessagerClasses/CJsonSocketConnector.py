@@ -1,7 +1,7 @@
 import json
 import socket
 
-from utils.logging import log
+from utils.logging_ import log
 
 
 msg_tmpl_client = {

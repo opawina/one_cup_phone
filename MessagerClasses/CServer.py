@@ -1,5 +1,5 @@
 from MessagerClasses.CJsonSocketConnector import JsonSocketConnector
-from utils.logging import log
+from utils.logging_ import log
 
 
 class Server(JsonSocketConnector):

@@ -1,11 +1,15 @@
+from os.path import abspath
+
+
 class DATABASE:
 
-    DBNAME = '../dwh/twocups.db'
+    DB_NAME = abspath('.') + '/dwh/twocups.db'
 
 
 class LOGGING:
 
-    LOGFILE = './dwh/log_info.log'
+    ENABLED_LOGGING = False
+    LOG_FILE = './dwh/log_info.log'
 
 
 class HOST:
