@@ -3,7 +3,7 @@ Beautiful code!
 '''
 
 import socket
-from multiprocessing import Process, current_process
+from multiprocessing import Process, current_process, Queue
 
 from MessagerClasses.CClient import Client
 from utils.cli_handler import cli_handler
@@ -18,7 +18,7 @@ from time import sleep
 socket_ = cli_handler()
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-def sock_work():
+def sock_work(q):
     sock_work.qq = None
     global received
 
@@ -41,9 +41,9 @@ def sock_work():
             try:
                 received = str(sock.recv(1024), "utf-8")
                 print(received)
-                sock_work.received = 'q1'
+                q.put(1)
             except Exception as E:
-                print(E)
+                print('EXCEPTION:', E)
 
 
     finally:
@@ -53,16 +53,19 @@ def sock_work():
 
 if __name__ == '__main__':
 
-    p1 = Process(target=sock_work)
+    q = Queue()
+
+    p1 = Process(target=sock_work, args=(q, ))
     p1.start()
 
     received = 1
     print(current_process().name)
     while True:
-        print(11111111111)
-        print(received)
 
-        if sock_work == 'q1':
+        ii = q.get()
+        print(ii)
+
+        if ii:
 
             msg = input('ENTER MSG ->') + '\n'
 
