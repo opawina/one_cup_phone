@@ -54,7 +54,7 @@ from select import select
 import os
 from socketserver import StreamRequestHandler, ThreadingTCPServer
 import threading
-from time import time
+from time import time, ctime
 import queue
 
 
@@ -63,7 +63,7 @@ from utils.cli_handler import cli_handler
 from utils.logging_ import log
 from utils.db_initiation import db_initiation
 
-
+from time import sleep
 
 
 # @log
@@ -75,7 +75,7 @@ def main():
 
         def handle(self):
 
-            self.connection.settimeout(2)
+            self.connection.settimeout(0.5)
 
             print("New connection:", self.client_address)
 
@@ -92,8 +92,10 @@ def main():
                 #     pass
                 #
                 # if msg:
+
+
                 print('SEND', msg)
-                self.wfile.write(str(msg).encode())
+                self.wfile.write((str(msg) + ctime()).encode())
                 msg += 100
 
                 try:
@@ -108,9 +110,12 @@ def main():
                         print(self.client_address, '->', data)
 
                 except Exception as E:
-                    print(E)
+                    print('EXCEPTION:', E)
 
                 print(list_hosts)
+                sleep(5)
+
+
 
 
     class CThreadingTCPServer(ThreadingTCPServer):pass

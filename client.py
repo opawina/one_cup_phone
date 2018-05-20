@@ -18,29 +18,10 @@ from time import sleep
 socket_ = cli_handler()
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-# global send
-send = None
-
-def inpt():
-    print('INPT BEGINS')
-    print(current_process().name)
-
-    # global send
-
-    while True:
-        print('IN INPT LOOP')
-
-        # try:
-        #     send = input('ENTER MSG ->') + '\n'
-        #
-        #     if send == 'ss':
-        #         break
-        # except EOFError as E:
-        #     print(E)
-        sleep(4)
-
-
 def sock_work():
+    sock_work.qq = None
+    global received
+
     print('SOCK WORK BEGINS')
     print(current_process().name)
 
@@ -57,8 +38,13 @@ def sock_work():
                 sock.sendall(bytes(send, 'utf-8'))
             send = None
 
-            received = str(sock.recv(1024), "utf-8")
-            print(received)
+            try:
+                received = str(sock.recv(1024), "utf-8")
+                print(received)
+                sock_work.received = 'q1'
+            except Exception as E:
+                print(E)
+
 
     finally:
         print('END')
@@ -67,15 +53,26 @@ def sock_work():
 
 if __name__ == '__main__':
 
-    p1 = Process(target=inpt)
-    p2 = Process(target=sock_work)
-
+    p1 = Process(target=sock_work)
     p1.start()
-    p2.start()
 
+    received = 1
+    print(current_process().name)
     while True:
-        print(current_process().name)
+        print(11111111111)
+        print(received)
+
+        if sock_work == 'q1':
+
+            msg = input('ENTER MSG ->') + '\n'
+
+            if msg.replace('\n', '') == 'ss':
+                break
+
+            received = None
         sleep(1)
+
+        # sleep(3)
 
 
 
