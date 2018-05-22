@@ -113,7 +113,7 @@ def main():
                     print('EXCEPTION:', E)
 
                 print(list_hosts)
-                sleep(5)
+                sleep(10)
 
 
 

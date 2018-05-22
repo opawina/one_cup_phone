@@ -17,6 +17,7 @@ from time import sleep
 
 socket_ = cli_handler()
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+sock.setblocking(1)
 
 def sock_work(q):
     sock_work.qq = None
@@ -40,10 +41,11 @@ def sock_work(q):
 
             try:
                 received = str(sock.recv(1024), "utf-8")
-                print(received)
-                q.put(1)
+                print('\n' + received)
+                q.put(received)
             except Exception as E:
-                print('EXCEPTION:', E)
+                pass
+                # print('EXCEPTION:', E)
 
 
     finally:
@@ -63,7 +65,7 @@ if __name__ == '__main__':
     while True:
 
         ii = q.get()
-        print(ii)
+        print('GET:', ii)
 
         if ii:
 
@@ -73,8 +75,6 @@ if __name__ == '__main__':
                 break
 
             received = None
-        sleep(1)
-
         # sleep(3)
 
 
