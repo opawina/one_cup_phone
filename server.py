@@ -93,10 +93,13 @@ def main():
                 #
                 # if msg:
 
-
-                print('SEND', msg)
-                self.wfile.write((str(msg) + ctime()).encode())
-                msg += 100
+                try: # обрабатываю Е если клиент отвалился
+                    print('SEND', msg)
+                    self.wfile.write((str(msg) + ctime()).encode())
+                    msg += 100
+                except:
+                    print('CLIENT WAS CLOSED CONNECTION')
+                    list_hosts.remove(self.client_address)
 
                 try:
                     data = self.rfile.readline().decode()[:-1]
@@ -110,7 +113,8 @@ def main():
                         print(self.client_address, '->', data)
 
                 except Exception as E:
-                    print('EXCEPTION:', E)
+                    pass
+                    # print('EXCEPTION:', E)
 
                 print(list_hosts)
                 sleep(8)
