@@ -56,14 +56,15 @@ from socketserver import StreamRequestHandler, ThreadingTCPServer
 import threading
 from time import time, ctime
 import queue
+from time import sleep
 
 
 from MessagerClasses.CServer import Server
 from utils.cli_handler import cli_handler
 from utils.logging_ import log
 from utils.db_initiation import db_initiation
+from utils import hash
 
-from time import sleep
 
 
 # @log
@@ -74,6 +75,13 @@ def main():
     class CTCPHandler(StreamRequestHandler):
 
         def handle(self):
+
+            # # авторизация
+            # if -n:
+            #     new_user
+            #     add to db
+            # else:
+            #     check in DB
 
             self.connection.settimeout(0.5)
 
