@@ -75,7 +75,7 @@ class DataBaseAPI():
         self.session = sessionmaker(bind=engine)()
 
 
-    def add_new_user(self, login, host):
+    def add_new_user(self, login, host, passw):
 
         # добавление нового юзера в БД
 
@@ -87,19 +87,20 @@ class DataBaseAPI():
         uid = new_user.id
         print(uid, 22222)
 
-        new_p = TPassw(id=uid, passw='123qwe')
+        new_p = TPassw(id=uid, passw=passw)
         self.session.add(new_p)
 
         self.session.commit()
 
 
-    def authorization_user(self, login):
+    def authorization_user(self, login, passw):
 
         # проверяю наличие юзера в БД
 
-        user = self.session.query(TUsers).filter_by(login=login).first()
+        passw_ = self.session.query(TUsers).filter(
+            TUsers.login=login).filter(TUsers.id==TPassw.id).first()
 
-        return True if user else False
+        return True if passw == passw_ else False
 
 
     def add_history_fact(self, id_user, msg, id_chat):
@@ -144,6 +145,6 @@ class DataBaseAPI():
 
 
 a = DataBaseAPI()
-a.add_new_user('31325', '56')
+# a.
 
 

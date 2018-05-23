@@ -63,7 +63,7 @@ from MessagerClasses.CServer import Server
 from utils.cli_handler import cli_handler
 from utils.logging_ import log
 from utils.db_initiation import db_initiation
-from utils import hash
+from utils import hasher
 
 
 
