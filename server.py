@@ -70,11 +70,13 @@ from utils import hasher
 # @log
 def main():
 
-    socket_ = cli_handler()
-
     class CTCPHandler(StreamRequestHandler):
 
         def handle(self):
+
+            self.connection.settimeout(0.5)
+
+            print("New connection:", self.client_address)
 
             # # авторизация
             # if -n:
@@ -83,52 +85,65 @@ def main():
             # else:
             #     check in DB
 
-            self.connection.settimeout(0.5)
-
-            print("New connection:", self.client_address)
-
-            list_hosts.append(self.client_address)
-
-            msg = 100
-
-            while True:
-
-                # try:
-                #     msg = q.get(block=False)
-                #     print('FROM Q:', msg)
-                # except:
-                #     pass
-                #
-                # if msg:
-
-                try: # обрабатываю Е если клиент отвалился
-                    print('SEND', msg)
-                    self.wfile.write((str(msg) + ctime()).encode())
-                    msg += 100
-                except:
-                    print('CLIENT WAS CLOSED CONNECTION')
-                    list_hosts.remove(self.client_address)
-
-                try:
-                    data = self.rfile.readline().decode()[:-1]
-
-                    if data == 'ss':
-                        print(self.client_address, 'BREAK')
-                        break
-
-                    if data:
-                        q.put(data)
-                        print(self.client_address, '->', data)
-
-                except Exception as E:
-                    pass
-                    # print('EXCEPTION:', E)
-
-                print(list_hosts)
-                sleep(8)
+            try:
+                # авторизация клиента
+                authorization = self.rfile.readline().decode()
+                authorization = json.loads(authorization.replace('\n', ''))
+                print(authorization['new_user'])
 
 
 
+                self.wfile.write('asdasd'.encode())
+
+            except:
+                raise
+                print('Client closed connection')
+
+
+            #
+            #
+            # list_hosts.append(self.client_address)
+            #
+            # msg = 100
+            #
+            # while True:
+            #
+            #     # try:
+            #     #     msg = q.get(block=False)
+            #     #     print('FROM Q:', msg)
+            #     # except:
+            #     #     pass
+            #     #
+            #     # if msg:
+            #
+            #     try: # обрабатываю Е если клиент отвалился
+            #         print('SEND', msg)
+            #         self.wfile.write((str(msg) + ctime()).encode())
+            #         msg += 100
+            #     except:
+            #         print('CLIENT WAS CLOSED CONNECTION')
+            #         list_hosts.remove(self.client_address)
+            #
+            #     try:
+            #         data = self.rfile.readline().decode()[:-1]
+            #
+            #         if data == 'ss':
+            #             print(self.client_address, 'BREAK')
+            #             break
+            #
+            #         if data:
+            #             q.put(data)
+            #             print(self.client_address, '->', data)
+            #
+            #     except Exception as E:
+            #         pass
+            #         # print('EXCEPTION:', E)
+            #
+            #     print(list_hosts)
+            #     sleep(8)
+
+    args_from_stdin = cli_handler()
+    socket_ = (args_from_stdin.addr, args_from_stdin.port)
 
     class CThreadingTCPServer(ThreadingTCPServer):pass
 

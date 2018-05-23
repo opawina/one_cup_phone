@@ -5,8 +5,12 @@ from utils.logging_ import log
 
 
 msg_tmpl_client = {
-    'new_user': {},
-    'authorization': {},
+    'authorization': {
+        'action': 'authorization',
+        'new_user': False,
+        'login': 'login',
+        'passw': 'passw'
+    },
     # 'get_all_users': {},
     # 'add_user_list_contacts': {},
     # 'del_user_list_contacts': {},
