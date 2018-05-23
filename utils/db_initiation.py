@@ -36,6 +36,13 @@ def db_initiation():
     );
     ''')
 
+    conn.execute('''
+    CREATE TABLE IF NOT EXISTS passw (
+      id INTEGER PRIMARY KEY,
+      passw TEXT
+    )
+    ''')
+
     # включаю зависимость внешних ключей
     conn.execute('''
     PRAGMA foreign_keys = ON;
@@ -43,6 +50,7 @@ def db_initiation():
 
     conn.commit()
     conn.close()
+
 
 
 if __name__ == '__main__':

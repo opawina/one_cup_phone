@@ -4,6 +4,8 @@ from sqlalchemy.orm import sessionmaker, relationship
 from sqlalchemy.ext.declarative import declarative_base
 import datetime
 
+from config import DATABASE
+
 
 DBase = declarative_base()
 
@@ -17,6 +19,17 @@ class TUsers(DBase):
     host = Column(Unicode())
 
     check_1 = UniqueConstraint("login")
+
+
+class TPassw(DBase):
+    __tablename__ = "passw"
+
+    id = Column(Integer(), ForeignKey("users.id"), primary_key=True)
+    passw = Column(Unicode())
+
+    check_1 = UniqueConstraint("id")
+
+    fk_id_user = relationship("TUsers", foreign_keys=[id])
 
 
 class THistory(DBase):
@@ -46,9 +59,11 @@ class TListContact(DBase):
     fk_id_contact = relationship("TUsers", foreign_keys=[id_contact])
 
 
+
     # def __repr__(self):
     #     # возвращаем id собеседников
     #     return str(self.id_contact)
+
 
 
 class DataBaseAPI():
@@ -56,8 +71,7 @@ class DataBaseAPI():
     def __init__(self):
 
         # self.id_user = id_user
-
-        engine = create_engine("sqlite:///twocups.db")
+        engine = create_engine('sqlite:///{}'.format(DATABASE.DB_NAME))
         self.session = sessionmaker(bind=engine)()
 
 
@@ -69,6 +83,13 @@ class DataBaseAPI():
 
         new_user = TUsers(login=login, date=date_now, host=host)
         self.session.add(new_user)
+        self.session.flush()
+        uid = new_user.id
+        print(uid, 22222)
+
+        new_p = TPassw(id=uid, passw='123qwe')
+        self.session.add(new_p)
+
         self.session.commit()
 
 
@@ -122,8 +143,7 @@ class DataBaseAPI():
         self.session.commit()
 
 
-
-# a = DataBaseAPI()
-# a.delete_user_from_list_contacts(55, 56)
+a = DataBaseAPI()
+a.add_new_user('31325', '56')
 
 
