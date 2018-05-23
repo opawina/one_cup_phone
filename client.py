@@ -15,7 +15,12 @@ from time import sleep
 # def main():
 
 
-socket_ = cli_handler()
+args_from_stdin = cli_handler()
+print(args_from_stdin)
+
+exit(33)
+socket_ = (args_from_stdin.addr, args_from_stdin.port)
+
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 sock.settimeout(5)
 
@@ -25,7 +30,6 @@ def sock_work(recv_inpt, inpt_send):
     global received
 
     print('SOCK WORK BEGINS')
-    print(current_process().name)
 
     try:
         sock.connect(socket_)
@@ -57,9 +61,13 @@ def sock_work(recv_inpt, inpt_send):
                 pass
                 # print('EXCEPTION:', E)
 
+    except: # обрабатываю Е если сервер не ответил
+
+        print('SERVER DID NOT RESPOND')
 
     finally:
-        print('END')
+
+        recv_inpt.put('END')
         sock.close()
 
 
@@ -71,13 +79,17 @@ if __name__ == '__main__':
     p1 = Process(target=sock_work, args=(recv_inpt, inpt_send, ))
     p1.start()
 
-    # received = 1
-    print(current_process().name)
     while True:
 
         recvinpt = recv_inpt.get()
-        print('GET:', recvinpt)
 
+        if recvinpt == 'END':
+            recv_inpt.close()
+            inpt_send.close()
+            print('CLOSE MESSENGER')
+            break
+
+        print('GET:', recvinpt)
         if recvinpt:
 
             send = input('ENTER MSG ->') + '\n'

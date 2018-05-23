@@ -22,7 +22,7 @@ class DATABASE:
 class LOGGING:
 
     ENABLED_LOGGING = False
-    LOG_FILE = './dwh/log_info.log'
+    LOG_FILE = path_to_dwh + '/log_info.log'
 
 
 class HOST:
