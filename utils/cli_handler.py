@@ -1,23 +1,40 @@
 import socket
 import argparse
-from utils.logging import log
 
+from utils.logging_ import log
+from config import HOST
+
+
+ip = HOST.IP
+port = HOST.PORT
+
+description = 'Default host is {}:{}'.format(ip, port)
 
 @log
 def cli_handler():
 
-    parser = argparse.ArgumentParser(description='Default host is 127.0.0.1:7777')
+    parser = argparse.ArgumentParser(description=description)
 
-    parser.add_argument('-a', '--addr', help='ip addres', default='127.0.0.1')
-    parser.add_argument('-p', '--port', help='tcp port', type=int, default=7777)
+    parser.add_argument('--addr', help='ip addres', default=ip)
+    parser.add_argument('--port', help='tcp port', type=int, default=port)
+    parser.add_argument('-n', '--new_usr', help='if u are new user', default=False, action='store_true')
+    # parser.add_argument('-l', '--login', help='your login', type=str, required=True)
+    # parser.add_argument('-p', '--password', help='your pass', type=str, required=True)
+    parser.add_argument('-l', '--login', help='your login', type=str,
+                        default='tiger')
+    parser.add_argument('-p', '--passw', help='your pass', type=str,
+    default='qwerty')
 
     args = parser.parse_args()
 
-    # validating ip string
-    try:
+    try: # validating ip string
         socket.inet_aton(args.addr)
     except:
         print('ip address is not correct')
         quit(3)
 
-    return (args.addr, args.port)
+    return (args)
+
+
+if __name__ == '__main__':
+    cli_handler()
