@@ -184,52 +184,6 @@ if __name__ == '__main__':
 
 
 
-    # with Server(socket_) as sockk:
-    #
-
-    #
-    #     b = 0
-    #     while True:
-    #
-    #         break_ = False
-    #         r, w, e = [], [], []
-    #         socks = sockk.accept_()
-    #         try:
-    #             r, w, e = select(socks, socks, socks, 0)
-    #         except Exception as e:
-    #             pass
-    #
-    #         for sock_r in r:
-    #             try:
-    #                 recv_data = sock_r.recv(1024)
-    #                 recv_data = recv_data.decode()
-    #                 recv_data = json.loads(recv_data)
-    #                 print(recv_data['message'])
-    #             except:
-    #                 print('r CLIENT SOCKET CLOSED', sock_r)
-    #                 socks.remove(sock_r)
-    #             else:
-    #                 if recv_data['message'] == 'ss':
-    #                     break_ = True
-    #             finally:
-    #                 recv_data = json.dumps(recv_data)
-    #                 recv_data = recv_data.encode()
-    #
-    #                 for sock_w in w:
-    #                     try:
-    #                         sock_w.send(recv_data)
-    #                     except:
-    #                         print('w CLIENT SOCKET CLOSED', sock_w)
-    #                         socks.remove(sock_w)
-    #
-    #
-    #         if break_:
-    #             break
-    #     # явно не закрываем соединеие т.к. используется менеджер контекста
-
-
-
-
 '''
 
 cd PycharmProjects\one_cup_phone
