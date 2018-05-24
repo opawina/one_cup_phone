@@ -60,6 +60,7 @@ from time import sleep
 
 
 from MessagerClasses.CServer import Server
+from MessagerClasses.CDataBaseAPI import DataBaseAPI
 from utils.cli_handler import cli_handler
 from utils.logging_ import log
 from utils.db_initiation import db_initiation
@@ -77,23 +78,44 @@ def main():
             self.connection.settimeout(0.5)
 
             print("New connection:", self.client_address)
+            host = self.client_address[0] + ':' + str(self.client_address[1])
 
-            # # авторизация
-            # if -n:
-            #     new_user
-            #     add to db
-            # else:
-            #     check in DB
+            dbapi = DataBaseAPI()
 
             try:
+                ###############################################
                 # авторизация клиента
-                authorization = self.rfile.readline().decode()
-                authorization = json.loads(authorization.replace('\n', ''))
-                print(authorization['new_user'])
+                authoriz = self.rfile.readline().decode()
+                authoriz = json.loads(authoriz.replace('\n', ''))
+
+                login = authoriz['login']
+                passw = authoriz['passw']
+
+                if authoriz['new_user']:
+                    try: # обрабатываю если юзер-логин уже существует
+                        dbapi.add_new_user(login, host, passw)
+                        print('NEW USER WAS ADD')
+                    except Exception as E:
+                        # print(E)
+                        print('LOGIN "{}" ALREADY EXIST'.format(login))
+
+                else:
+                    print('OLD USER')
+                    authoriz_fact = dbapi.authorization_user(login, passw)
+                    if authoriz_fact:
+                        print('USER WAS AUTHORIZED')
+                    else:
+                        print('UKNOWN USER')
 
 
 
+                ################################################
+                # основная работа
+
+
+                print(111111111111)
                 self.wfile.write('asdasd'.encode())
+                print(111111111111)
 
             except:
                 raise

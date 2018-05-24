@@ -1,6 +1,9 @@
 import hashlib
 from platform import platform
 
+from dwh.salt import salt
+
+
 def hasher(login, passw):
 
     hash = hashlib.shake_128()
@@ -8,8 +11,7 @@ def hasher(login, passw):
     hash.update(login.encode())
     hash.update(passw.encode())
     hash.update(platform().encode())
+    hash.update(salt.encode())
 
-    hash = hash.hexdigest(10)
-    print(hash)
+    return hash.hexdigest(10)
 
-    return hash

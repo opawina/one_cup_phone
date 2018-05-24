@@ -5,6 +5,7 @@ from sqlalchemy.ext.declarative import declarative_base
 import datetime
 
 from config import DATABASE
+from utils.hasher import hasher
 
 
 DBase = declarative_base()
@@ -85,9 +86,10 @@ class DataBaseAPI():
         self.session.add(new_user)
         self.session.flush()
         uid = new_user.id
-        print(uid, 22222)
 
-        new_p = TPassw(id=uid, passw=passw)
+        passw_ = hasher(login, passw)
+
+        new_p = TPassw(id=uid, passw=passw_)
         self.session.add(new_p)
 
         self.session.commit()
@@ -97,10 +99,12 @@ class DataBaseAPI():
 
         # проверяю наличие юзера в БД
 
-        passw_ = self.session.query(TUsers).filter(
-            TUsers.login=login).filter(TUsers.id==TPassw.id).first()
+        passw_ = hasher(login, passw)
 
-        return True if passw == passw_ else False
+        passw__ = self.session.query(TPassw.passw).filter(
+            TUsers.login==login).filter(TUsers.id==TPassw.id).first()
+
+        return True if passw_ == passw__[0] else False
 
 
     def add_history_fact(self, id_user, msg, id_chat):
@@ -142,9 +146,3 @@ class DataBaseAPI():
         self.session.query(TListContact).filter_by(id_user=id_user,
                                               id_contact=id_contact).delete()
         self.session.commit()
-
-
-a = DataBaseAPI()
-# a.
-
-
