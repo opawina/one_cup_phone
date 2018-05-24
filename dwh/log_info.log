@@ -138,3 +138,183 @@
 [2018-05-20 18:32:49,101] Function cli_handler was called by %(module)s
 [2018-05-20 18:32:49,304] Function cli_handler was called by %(module)s
 [2018-05-20 18:32:49,335] Function cli_handler was called by %(module)s
+[2018-05-24 15:20:34,802] Exception during reset or similar
+Traceback (most recent call last):
+  File "C:\Users\shinkarenko\AppData\Local\Programs\Python\Python36\lib\site-packages\sqlalchemy\event\base.py", line 79, in __init__
+    self._empty_listeners = self._empty_listener_reg[instance_cls]
+  File "C:\Users\shinkarenko\AppData\Local\Programs\Python\Python36\lib\weakref.py", line 394, in __getitem__
+    return self.data[ref(key)]
+KeyError: <weakref at 0x0000013E72595A48; to 'type' at 0x0000013E71E8A598 (Session)>
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\shinkarenko\AppData\Local\Programs\Python\Python36\lib\site-packages\sqlalchemy\pool.py", line 709, in _finalize_fairy
+    fairy._reset(pool)
+  File "C:\Users\shinkarenko\AppData\Local\Programs\Python\Python36\lib\site-packages\sqlalchemy\pool.py", line 880, in _reset
+    pool._dialect.do_rollback(self)
+  File "C:\Users\shinkarenko\AppData\Local\Programs\Python\Python36\lib\site-packages\sqlalchemy\engine\default.py", line 457, in do_rollback
+    dbapi_connection.rollback()
+sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread.The object was created in thread id 5292 and this is thread id 3900
+[2018-05-24 15:20:34,824] Exception closing connection <sqlite3.Connection object at 0x0000013E72592490>
+Traceback (most recent call last):
+  File "C:\Users\shinkarenko\AppData\Local\Programs\Python\Python36\lib\site-packages\sqlalchemy\event\base.py", line 79, in __init__
+    self._empty_listeners = self._empty_listener_reg[instance_cls]
+  File "C:\Users\shinkarenko\AppData\Local\Programs\Python\Python36\lib\weakref.py", line 394, in __getitem__
+    return self.data[ref(key)]
+KeyError: <weakref at 0x0000013E72595A48; to 'type' at 0x0000013E71E8A598 (Session)>
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\shinkarenko\AppData\Local\Programs\Python\Python36\lib\site-packages\sqlalchemy\pool.py", line 709, in _finalize_fairy
+    fairy._reset(pool)
+  File "C:\Users\shinkarenko\AppData\Local\Programs\Python\Python36\lib\site-packages\sqlalchemy\pool.py", line 880, in _reset
+    pool._dialect.do_rollback(self)
+  File "C:\Users\shinkarenko\AppData\Local\Programs\Python\Python36\lib\site-packages\sqlalchemy\engine\default.py", line 457, in do_rollback
+    dbapi_connection.rollback()
+sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread.The object was created in thread id 5292 and this is thread id 3900
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\shinkarenko\AppData\Local\Programs\Python\Python36\lib\site-packages\sqlalchemy\pool.py", line 317, in _close_connection
+    self._dialect.do_close(connection)
+  File "C:\Users\shinkarenko\AppData\Local\Programs\Python\Python36\lib\site-packages\sqlalchemy\engine\default.py", line 463, in do_close
+    dbapi_connection.close()
+sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread.The object was created in thread id 5292 and this is thread id 3900
+[2018-05-24 15:30:03,114] Exception during reset or similar
+Traceback (most recent call last):
+  File "C:\Users\shinkarenko\AppData\Local\Programs\Python\Python36\lib\site-packages\sqlalchemy\event\base.py", line 79, in __init__
+    self._empty_listeners = self._empty_listener_reg[instance_cls]
+  File "C:\Users\shinkarenko\AppData\Local\Programs\Python\Python36\lib\weakref.py", line 394, in __getitem__
+    return self.data[ref(key)]
+KeyError: <weakref at 0x0000025300EFCCC8; to 'type' at 0x000002530082F588 (Session)>
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\shinkarenko\AppData\Local\Programs\Python\Python36\lib\site-packages\sqlalchemy\pool.py", line 709, in _finalize_fairy
+    fairy._reset(pool)
+  File "C:\Users\shinkarenko\AppData\Local\Programs\Python\Python36\lib\site-packages\sqlalchemy\pool.py", line 880, in _reset
+    pool._dialect.do_rollback(self)
+  File "C:\Users\shinkarenko\AppData\Local\Programs\Python\Python36\lib\site-packages\sqlalchemy\engine\default.py", line 457, in do_rollback
+    dbapi_connection.rollback()
+sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread.The object was created in thread id 10720 and this is thread id 34764
+[2018-05-24 15:30:03,116] Exception closing connection <sqlite3.Connection object at 0x0000025300EFE030>
+Traceback (most recent call last):
+  File "C:\Users\shinkarenko\AppData\Local\Programs\Python\Python36\lib\site-packages\sqlalchemy\event\base.py", line 79, in __init__
+    self._empty_listeners = self._empty_listener_reg[instance_cls]
+  File "C:\Users\shinkarenko\AppData\Local\Programs\Python\Python36\lib\weakref.py", line 394, in __getitem__
+    return self.data[ref(key)]
+KeyError: <weakref at 0x0000025300EFCCC8; to 'type' at 0x000002530082F588 (Session)>
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\shinkarenko\AppData\Local\Programs\Python\Python36\lib\site-packages\sqlalchemy\pool.py", line 709, in _finalize_fairy
+    fairy._reset(pool)
+  File "C:\Users\shinkarenko\AppData\Local\Programs\Python\Python36\lib\site-packages\sqlalchemy\pool.py", line 880, in _reset
+    pool._dialect.do_rollback(self)
+  File "C:\Users\shinkarenko\AppData\Local\Programs\Python\Python36\lib\site-packages\sqlalchemy\engine\default.py", line 457, in do_rollback
+    dbapi_connection.rollback()
+sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread.The object was created in thread id 10720 and this is thread id 34764
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\shinkarenko\AppData\Local\Programs\Python\Python36\lib\site-packages\sqlalchemy\pool.py", line 317, in _close_connection
+    self._dialect.do_close(connection)
+  File "C:\Users\shinkarenko\AppData\Local\Programs\Python\Python36\lib\site-packages\sqlalchemy\engine\default.py", line 463, in do_close
+    dbapi_connection.close()
+sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread.The object was created in thread id 10720 and this is thread id 34764
+[2018-05-24 15:44:49,894] Exception during reset or similar
+Traceback (most recent call last):
+  File "C:\Users\shinkarenko\AppData\Local\Programs\Python\Python36\lib\site-packages\sqlalchemy\event\base.py", line 79, in __init__
+    self._empty_listeners = self._empty_listener_reg[instance_cls]
+  File "C:\Users\shinkarenko\AppData\Local\Programs\Python\Python36\lib\weakref.py", line 394, in __getitem__
+    return self.data[ref(key)]
+KeyError: <weakref at 0x000001E5A690A458; to 'type' at 0x000001E5A629D538 (Session)>
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\shinkarenko\AppData\Local\Programs\Python\Python36\lib\site-packages\sqlalchemy\pool.py", line 709, in _finalize_fairy
+    fairy._reset(pool)
+  File "C:\Users\shinkarenko\AppData\Local\Programs\Python\Python36\lib\site-packages\sqlalchemy\pool.py", line 880, in _reset
+    pool._dialect.do_rollback(self)
+  File "C:\Users\shinkarenko\AppData\Local\Programs\Python\Python36\lib\site-packages\sqlalchemy\engine\default.py", line 457, in do_rollback
+    dbapi_connection.rollback()
+sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread.The object was created in thread id 41584 and this is thread id 47232
+[2018-05-24 15:44:49,906] Exception closing connection <sqlite3.Connection object at 0x000001E5A68D5C70>
+Traceback (most recent call last):
+  File "C:\Users\shinkarenko\AppData\Local\Programs\Python\Python36\lib\site-packages\sqlalchemy\event\base.py", line 79, in __init__
+    self._empty_listeners = self._empty_listener_reg[instance_cls]
+  File "C:\Users\shinkarenko\AppData\Local\Programs\Python\Python36\lib\weakref.py", line 394, in __getitem__
+    return self.data[ref(key)]
+KeyError: <weakref at 0x000001E5A690A458; to 'type' at 0x000001E5A629D538 (Session)>
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\shinkarenko\AppData\Local\Programs\Python\Python36\lib\site-packages\sqlalchemy\pool.py", line 709, in _finalize_fairy
+    fairy._reset(pool)
+  File "C:\Users\shinkarenko\AppData\Local\Programs\Python\Python36\lib\site-packages\sqlalchemy\pool.py", line 880, in _reset
+    pool._dialect.do_rollback(self)
+  File "C:\Users\shinkarenko\AppData\Local\Programs\Python\Python36\lib\site-packages\sqlalchemy\engine\default.py", line 457, in do_rollback
+    dbapi_connection.rollback()
+sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread.The object was created in thread id 41584 and this is thread id 47232
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\shinkarenko\AppData\Local\Programs\Python\Python36\lib\site-packages\sqlalchemy\pool.py", line 317, in _close_connection
+    self._dialect.do_close(connection)
+  File "C:\Users\shinkarenko\AppData\Local\Programs\Python\Python36\lib\site-packages\sqlalchemy\engine\default.py", line 463, in do_close
+    dbapi_connection.close()
+sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread.The object was created in thread id 41584 and this is thread id 47232
+[2018-05-24 15:44:49,907] Exception during reset or similar
+Traceback (most recent call last):
+  File "C:\Users\shinkarenko\AppData\Local\Programs\Python\Python36\lib\site-packages\sqlalchemy\event\base.py", line 79, in __init__
+    self._empty_listeners = self._empty_listener_reg[instance_cls]
+  File "C:\Users\shinkarenko\AppData\Local\Programs\Python\Python36\lib\weakref.py", line 394, in __getitem__
+    return self.data[ref(key)]
+KeyError: <weakref at 0x000001E5A690A458; to 'type' at 0x000001E5A629D538 (Session)>
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\shinkarenko\AppData\Local\Programs\Python\Python36\lib\site-packages\sqlalchemy\pool.py", line 709, in _finalize_fairy
+    fairy._reset(pool)
+  File "C:\Users\shinkarenko\AppData\Local\Programs\Python\Python36\lib\site-packages\sqlalchemy\pool.py", line 880, in _reset
+    pool._dialect.do_rollback(self)
+  File "C:\Users\shinkarenko\AppData\Local\Programs\Python\Python36\lib\site-packages\sqlalchemy\engine\default.py", line 457, in do_rollback
+    dbapi_connection.rollback()
+sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread.The object was created in thread id 44304 and this is thread id 47232
+[2018-05-24 15:44:49,908] Exception closing connection <sqlite3.Connection object at 0x000001E5A6902490>
+Traceback (most recent call last):
+  File "C:\Users\shinkarenko\AppData\Local\Programs\Python\Python36\lib\site-packages\sqlalchemy\event\base.py", line 79, in __init__
+    self._empty_listeners = self._empty_listener_reg[instance_cls]
+  File "C:\Users\shinkarenko\AppData\Local\Programs\Python\Python36\lib\weakref.py", line 394, in __getitem__
+    return self.data[ref(key)]
+KeyError: <weakref at 0x000001E5A690A458; to 'type' at 0x000001E5A629D538 (Session)>
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\shinkarenko\AppData\Local\Programs\Python\Python36\lib\site-packages\sqlalchemy\pool.py", line 709, in _finalize_fairy
+    fairy._reset(pool)
+  File "C:\Users\shinkarenko\AppData\Local\Programs\Python\Python36\lib\site-packages\sqlalchemy\pool.py", line 880, in _reset
+    pool._dialect.do_rollback(self)
+  File "C:\Users\shinkarenko\AppData\Local\Programs\Python\Python36\lib\site-packages\sqlalchemy\engine\default.py", line 457, in do_rollback
+    dbapi_connection.rollback()
+sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread.The object was created in thread id 44304 and this is thread id 47232
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\shinkarenko\AppData\Local\Programs\Python\Python36\lib\site-packages\sqlalchemy\pool.py", line 317, in _close_connection
+    self._dialect.do_close(connection)
+  File "C:\Users\shinkarenko\AppData\Local\Programs\Python\Python36\lib\site-packages\sqlalchemy\engine\default.py", line 463, in do_close
+    dbapi_connection.close()
+sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread.The object was created in thread id 44304 and this is thread id 47232

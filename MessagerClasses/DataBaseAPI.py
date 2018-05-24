@@ -104,7 +104,10 @@ class DataBaseAPI():
         passw__ = self.session.query(TPassw.passw).filter(
             TUsers.login==login).filter(TUsers.id==TPassw.id).first()
 
-        return True if passw_ == passw__[0] else False
+        if passw__:
+            passw__ = passw__[0]
+
+        return True if passw_ == passw__ else False
 
 
     def add_history_fact(self, id_user, msg, id_chat):

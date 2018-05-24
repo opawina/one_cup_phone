@@ -6,10 +6,10 @@ import socket
 from multiprocessing import Process, current_process, Queue
 import json
 
-from MessagerClasses.CClient import Client
+from MessagerClasses.Client import Client
 from utils.cli_handler import cli_handler
 from utils.logging_ import log
-from MessagerClasses.CJsonSocketConnector import msg_tmpl_client
+from MessagerClasses.JsonSocketConnector import msg_tmpl_client
 
 
 from time import sleep
@@ -36,11 +36,11 @@ def sock_work(recv_inpt, inpt_send):
 
         if send:
             print('SEND')
-            sock.sendall(bytes(send, 'utf-8'))
+            client.sendall(bytes(send, 'utf-8'))
             send = None
 
         try:
-            received = str(sock.recv(1024), "utf-8")
+            received = str(client.recv(1024), "utf-8")
             print('\nRECEIVED:' + received)
             if received:
                 recv_inpt.put(received)
@@ -52,102 +52,47 @@ def sock_work(recv_inpt, inpt_send):
 
 if __name__ == '__main__':
 
-    args_from_stdin = cli_handler()
-    print(args_from_stdin)
+    socket_, user_data = cli_handler()
 
-    socket_ = (args_from_stdin.addr, args_from_stdin.port)
+    with Client(socket_, user_data) as client:
 
-    # __init__ CClient
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.settimeout(5)
+        # основная работа
+        print('оосновная работа')
 
-    print('STARTING MESSENGER...')
+        recv_inpt = Queue()
+        inpt_send = Queue()
 
-    try: # обрабатываю Е если сервер не ответил
-        sock.connect(socket_)
+        p1 = Process(target=sock_work, args=(recv_inpt, inpt_send,))
+        p1.start()
 
-        # авторизация
-        msg = msg_tmpl_client['authorization']
-        msg['new_user'] = args_from_stdin.new_usr
-        msg['login'] = args_from_stdin.login
-        msg['passw'] = args_from_stdin.passw
-        # print(json.dumps(msg) + '\n')
-        # sock.sendall((json.dumps(msg) + '\n').encode())
+        recvinpt = None
 
-        msg = json.dumps(msg) + '\n'
-        print('*'+msg+'*')
-        # msg = 'qwe1' + '\n'
-        # sock.sendall(bytes(msg, 'utf-8'))
-        sock.sendall(msg.encode())
-        print(12)
+        while True:
 
+            try:
+                recvinpt = recv_inpt.get(block=False)
+            except:
+                pass
 
+            if recvinpt == 'END':
+                recv_inpt.close()
+                inpt_send.close()
+                print('CLOSE MESSENGER')
+                break
 
-        # recv_inpt = Queue()
-        # inpt_send = Queue()
-        #
-        # p1 = Process(target=sock_work, args=(recv_inpt, inpt_send,))
-        # p1.start()
-        #
-        # while True:
-        #
-        #     recvinpt = recv_inpt.get()
-        #
-        #     if recvinpt == 'END':
-        #         recv_inpt.close()
-        #         inpt_send.close()
-        #         print('CLOSE MESSENGER')
-        #         break
-        #
-        #     print('GET:', recvinpt)
-        #     if recvinpt:
-        #
-        #         send = input('ENTER MSG ->') + '\n'
-        #         print(send, send, send)
-        #
-        #         if send.replace('\n', '') == 'ss':
-        #             break
-        #
-        #         inpt_send.put(send)
+            print('GET:', recvinpt)
+            if recvinpt:
 
-                # received = None
-            # sleep(3)
+                send = input('ENTER MSG ->') + '\n'
+                print(send, send, send)
 
+                if send.replace('\n', '') == 'ss':
+                    break
 
+                inpt_send.put(send)
 
-
-    except ConnectionRefusedError:
-        print('SERVER DID NOT RESPOND')
-    except Exception as E:
-        raise
-    finally:
-        sock.close()
-        print('THE END')
-
-
-
-
-
-
-
-
-    # with Client(socket_) as sockk:
-    #
-    #     # общаемся
-    #     while True:
-    #         try:
-    #             recv_data = sockk.recv_()
-    #             print('RECIVE:', recv_data['message'])
-    #         except:
-    #             pass
-    #         finally:
-    #             inpt = input()
-    #             sockk.json_tmpl['message'] = inpt
-    #             sockk.send_()
-    #
-    #             if inpt == 'ss':
-    #                 break
-    # # явно не закрываем соединеие т.к. используется менеджер контекста
+                received = None
+            sleep(3)
 
 
 

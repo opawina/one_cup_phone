@@ -1,4 +1,4 @@
-from MessagerClasses.CJsonSocketConnector import JsonSocketConnector
+from MessagerClasses.JsonSocketConnector import JsonSocketConnector
 from utils.logging_ import log
 
 
