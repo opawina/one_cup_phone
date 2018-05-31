@@ -1,0 +1,7 @@
+setup.py
+./tcmessenger_serv/__init__.py
+./tcmessenger_serv/config.py
+TCMessenger_serv.egg-info/PKG-INFO
+TCMessenger_serv.egg-info/SOURCES.txt
+TCMessenger_serv.egg-info/dependency_links.txt
+TCMessenger_serv.egg-info/top_level.txt
